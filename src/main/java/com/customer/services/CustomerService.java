@@ -1,10 +1,9 @@
 package com.customer.services;
 
-import com.customer.CustomerRepository;
-import com.customer.Entity.Customer;
+//import com.customer.Repository.CustomerRepository;
+import com.customer.Entity.CustomerEntity;
+import com.customer.Repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,10 +13,11 @@ public class CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
-    public String createCustomer(Customer customer) {
+    public String createCustomer(CustomerEntity customer) {
+//        if ((customer.getPassword().length() < 8 || customer.getPassword().length() > 10) || (existsByUsername(customer.getUsername()))
         try {
             if (customer.getPassword().length() < 8 || customer.getPassword().length() > 10) {
-                return "Password length should be between 8 and 10";
+                return "Password length should be between 8 and 10(inclusive)";
             }
             if (existsByUsername(customer.getUsername())) {
                 return "Username already exists";
@@ -29,7 +29,7 @@ public class CustomerService {
         }
     }
 
-    public Optional<Customer> getCustomerById(Long id) {
+    public Optional<CustomerEntity> getCustomerById(Long id) {
         return customerRepository.findById(id);
     }
 
