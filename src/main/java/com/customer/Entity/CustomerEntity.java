@@ -1,9 +1,11 @@
 package com.customer.Entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.util.Date;
+
 
 @Data
 @Entity
@@ -16,34 +18,30 @@ public class CustomerEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotBlank
     @Column(name = "firstName")
     private String firstName;
 
+    @NotBlank
     @Column(name = "lastName")
     private String lastName;
 
+    @Past
     @Column(name = "dob")
     private Date dob;
 
-    @Column(name = "email")
+    @Email
+    @NotBlank
+    @Column(name = "email",unique = true)
     private String email;
 
+    @NotBlank
     @Column(name = "username", unique = true)
     private String username;
 
+    @NotBlank
+    @Size(min = 8,max = 10)
     @Column(name = "Password")
     private String password;
-
-//    public String toString() {
-//        return "Customer{" +
-//                "id=" + id +
-//                ", firstName='" + firstName + '\'' +
-//                ", lastName='" + lastName + '\'' +
-//                ", dob=" + dob +
-//                ", email='" + email + '\'' +
-//                ", username='" + username + '\'' +
-//                ", password='" + password + '\'' +
-//                '}';
-//    }
 }
 

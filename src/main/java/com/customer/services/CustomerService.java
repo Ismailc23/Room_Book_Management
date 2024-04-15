@@ -13,27 +13,11 @@ public class CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
-    public String createCustomer(CustomerEntity customer) {
-//        if ((customer.getPassword().length() < 8 || customer.getPassword().length() > 10) || (existsByUsername(customer.getUsername()))
-        try {
-            if (customer.getPassword().length() < 8 || customer.getPassword().length() > 10) {
-                return "Password length should be between 8 and 10(inclusive)";
-            }
-            if (existsByUsername(customer.getUsername())) {
-                return "Username already exists";
-            }
-            customerRepository.save(customer);
-            return "Customer Saved";
-        } catch (Exception e) {
-            return "Error occurred: " + e.getMessage();
-        }
-    }
+    public void createCustomer(CustomerEntity customer) {
+        customerRepository.save(customer);
+   }
 
     public Optional<CustomerEntity> getCustomerById(Long id) {
         return customerRepository.findById(id);
-    }
-
-    public boolean existsByUsername(String username) {
-        return customerRepository.existsByUsername(username);
     }
 }
