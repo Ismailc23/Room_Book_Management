@@ -25,7 +25,10 @@ public class RoomController {
     @GetMapping("request/api/room/{id}")
     public ResponseEntity<?> getRoom(@PathVariable long id) {
         Optional<RoomEntity> roomOptional = roomService.getRoomById(id);
-        return roomOptional.map(room -> ResponseEntity.ok().body(room))
-                .orElse(ResponseEntity.notFound().build());
+       if(roomOptional.isPresent()){
+           return ResponseEntity.ok().body(roomOptional.get());
+       }else {
+           return ResponseEntity.notFound().build();
+       }
     }
 }
