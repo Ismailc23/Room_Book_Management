@@ -18,14 +18,11 @@ public class CustomerController {
     @PostMapping("request/api/customer")
     @ResponseStatus(code = HttpStatus.CREATED)
     public ResponseEntity<?> createCustomer(@RequestBody CustomerEntity customer){
-           return ResponseEntity.status(HttpStatus.CREATED).body(customerService.createCustomer(customer));
-       }
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerService.createCustomer(customer));
+    }
 
     @GetMapping("request/api/customer/{id}")
     public Optional<CustomerEntity> getCustomer(@PathVariable long id) {
-         return customerService.getCustomerById(id);
-//        Optional<CustomerEntity> customerOptional = customerService.getCustomerById(id);
-//        return customerOptional.map(customer -> ResponseEntity.ok().body(customer))
-//                .orElse(ResponseEntity.notFound().build());
+        return (customerService.getCustomerById(id));
     }
 }
