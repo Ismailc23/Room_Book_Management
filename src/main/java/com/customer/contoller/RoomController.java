@@ -1,5 +1,6 @@
 package com.customer.contoller;
 
+import com.customer.Entity.CustomerEntity;
 import com.customer.Entity.RoomEntity;
 import com.customer.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,14 @@ public class RoomController {
 
     @PostMapping("request/api/room")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> createRoom(@RequestBody RoomEntity room){
+    public ResponseEntity<?> createRoom(@RequestBody RoomEntity room) {
         return ResponseEntity.status(HttpStatus.CREATED).body(roomService.createRoom(room));
     }
+
     @GetMapping("request/api/room/{id}")
-    public Optional<RoomEntity> getRoomById(@PathVariable Long id){
-        return roomService.getRoomById(id);
+    public ResponseEntity<?> getRoom(@PathVariable long id) {
+        Optional<RoomEntity> roomOptional = roomService.getRoomById(id);
+        return roomOptional.map(room -> ResponseEntity.ok().body(room))
+                .orElse(ResponseEntity.notFound().build());
     }
 }
