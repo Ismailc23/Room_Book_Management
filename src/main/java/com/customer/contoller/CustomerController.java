@@ -7,8 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @RestController
 public class CustomerController {
 
@@ -18,13 +16,17 @@ public class CustomerController {
     @PostMapping("request/api/customer")
     @ResponseStatus(code = HttpStatus.CREATED)
     public ResponseEntity<?> createCustomer(@RequestBody CustomerEntity customer) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(customerService.createCustomer(customer));
+        ResponseEntity<?> response = customerService.createCustomer(customer);
+        if (response.getStatusCode() == HttpStatus.CREATED) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(response.getBody());
+        } else {
+            return response;
+        }
     }
 
     @GetMapping("request/api/customer/{id}")
     public ResponseEntity<?> getcustomer(@PathVariable long id) {
-        Optional<CustomerEntity> customerOptional = customerService.getCustomerById(id);
-        return customerOptional.map(customer -> ResponseEntity.ok().body(customer))
+        return customerService.getCustomerById(id).map(customer -> ResponseEntity.ok().body(customer))
                 .orElse(ResponseEntity.notFound().build());
     }
 }
