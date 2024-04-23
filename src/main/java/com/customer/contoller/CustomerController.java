@@ -13,18 +13,18 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    @PostMapping("request/api/customer")
+    @PostMapping("/request/api/customer")
     @ResponseStatus(code = HttpStatus.CREATED)
     public ResponseEntity<?> createCustomer(@RequestBody CustomerEntity customer) {
-        ResponseEntity<?> response = customerService.createCustomer(customer);
-        if (response.getStatusCode() == HttpStatus.CREATED) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(response.getBody());
+        CustomerEntity response = customerService.createCustomer(customer);
+        if (response != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } else {
-            return response;
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 
-    @GetMapping("request/api/customer/{id}")
+    @GetMapping("/request/api/customer/{id}")
     public ResponseEntity<?> getcustomer(@PathVariable long id) {
         return customerService.getCustomerById(id).map(customer -> ResponseEntity.ok().body(customer))
                 .orElse(ResponseEntity.notFound().build());

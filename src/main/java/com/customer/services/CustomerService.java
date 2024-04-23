@@ -27,16 +27,17 @@ public class CustomerService {
         int age = Period.between(dateOfBirth, current).getYears();
         return age > 18;
     }
-    public ResponseEntity<?> createCustomer(CustomerEntity customer) {
+    public CustomerEntity createCustomer(CustomerEntity customer) {
         if (!isCustomerAbove18(customer)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return null;
         }
             BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
             String encryptedpwd = bcrypt.encode(customer.getPassword());
             customer.setPassword(encryptedpwd);
             customerRepository.save(customer);
 
-            return ResponseEntity.status(HttpStatus.CREATED).body(customer);
+            return customer;
     }
 
     public Optional<CustomerEntity> getCustomerById(Long id) {
