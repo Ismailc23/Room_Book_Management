@@ -2,7 +2,6 @@ package com.customer.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.util.List;
 
 @Data
 @Entity
