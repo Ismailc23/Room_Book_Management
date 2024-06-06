@@ -16,8 +16,7 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    @PostMapping(value = "/request/api/customer", consumes = "application/json")
-    @ResponseStatus(code = HttpStatus.CREATED)
+    @PostMapping("/request/api/customer")
     public ResponseEntity<?> createCustomer(@RequestBody CustomerEntity customer) {
         Optional<CustomerEntity> response = Optional.ofNullable(customerService.createCustomer(customer));
         Map<String, Object> responseBody = new HashMap<>();
@@ -28,12 +27,40 @@ public class CustomerController {
         } else {
             responseBody.put("customer", null);
             responseBody.put("error", "Not able to create");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseBody);
         }
     }
+
     @GetMapping("/request/api/customer/{id}")
-    public ResponseEntity<CustomerEntity> getcustomer(@PathVariable Long id) {
-        return customerService.getCustomerById(id).map(customer -> ResponseEntity.ok().body(customer))
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> getCustomer(@PathVariable Long id) {
+      if(customerService.getCustomerById(id).isPresent()){
+            return ResponseEntity.ok().body(customerService.getCustomerById(id).get());
+        }else {
+            return ResponseEntity.notFound().build();
+        }
     }
+
+    @PutMapping("/request/api/customer/{id}")
+    public ResponseEntity<?> updateCustomer(@PathVariable Long id,@RequestBody CustomerEntity customer)
+    {
+        customer.setCustomerId(id);
+        Optional<CustomerEntity> response = Optional.ofNullable(customerService.updateCustomer(customer));
+        Map<String, Object> responseBody = new HashMap<>();
+        if (response.isPresent()) {
+            responseBody.put("customer", response.get());
+            responseBody.put("error", null);
+            return ResponseEntity.status(HttpStatus.OK).body(responseBody);
+        } else {
+            responseBody.put("customer", null);
+            responseBody.put("error", "Not able to Update");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseBody);
+        }
+    }
+
+    @DeleteMapping("/request/api/customer/{id}")
+    public ResponseEntity<?> deleteCustomer(@PathVariable Long id)
+    {
+        return customerService.deleteCustomer(id) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
 }

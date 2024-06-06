@@ -77,12 +77,12 @@ public class CustomerControllerTest {
     @Test
     void testGetCustomerById() {
         when(customerService.getCustomerById(customer.getCustomerId())).thenReturn(Optional.of(customer));
-        ResponseEntity<?> responseEntity = customerController.getcustomer(customer.getCustomerId());
+        ResponseEntity<?> responseEntity = customerController.getCustomer(customer.getCustomerId());
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
     @Test
     void testGetCustomerByNoId() {
-        ResponseEntity<?> responseEntity = customerController.getcustomer(null);
+        ResponseEntity<?> responseEntity = customerController.getCustomer(null);
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
     }
 }

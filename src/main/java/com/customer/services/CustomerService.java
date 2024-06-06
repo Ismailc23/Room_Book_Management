@@ -6,6 +6,8 @@ import com.customer.Repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -24,17 +26,49 @@ public class CustomerService {
         return age > 18;
     }
     public CustomerEntity createCustomer(CustomerEntity customer) {
+        if(customerRepository.findByUserName(customer.getUserName()).isPresent())
+        {
+            return null;
+        }
         if (!isCustomerAbove18(customer)) {
             return null;
         }
             BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
             String encryptedpwd = bcrypt.encode(customer.getPassword());
             customer.setPassword(encryptedpwd);
-            customerRepository.save(customer);
-            return customer;
+            return customerRepository.save(customer);
+//            return customer;
     }
 
-    public Optional<CustomerEntity> getCustomerById(Long id) {
+    public Optional<CustomerEntity> getCustomerById(Long id)
+    {
         return customerRepository.findById(id);
     }
+
+
+    public CustomerEntity updateCustomer(CustomerEntity customer) {
+        Optional<CustomerEntity> existCustomer = customerRepository.findById(customer.getCustomerId());
+        if (!existCustomer.isPresent()) {
+            return null;
+        }
+        if (customerRepository.existsByUserName(customer.getUserName()))
+        {
+            return null;
+        }
+        return customerRepository.save(customer);
+    }
+
+
+    public boolean deleteCustomer(Long id)
+    {
+        if(customerRepository.existsById(id))
+        {
+            customerRepository.deleteById(id);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 }

@@ -9,14 +9,14 @@ import lombok.*;
 public class RoomEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long RoomId;
-
-    private int roomNumber;
+    private long roomNumber;
 
     private int price;
 
     private String type;
 
     private boolean available;
+
+    @OneToOne(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    private BookingsEntity bookings;
 }

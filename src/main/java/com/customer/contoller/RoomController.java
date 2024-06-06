@@ -28,7 +28,11 @@ public class RoomController {
             responseBody.put("error", null);
             return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
         }
-        return null;
+        else {
+            responseBody.put("room", null);
+            responseBody.put("error", "Not able to create");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseBody);
+        }
     }
 
     @GetMapping("request/api/room/{id}")
@@ -39,4 +43,32 @@ public class RoomController {
            return ResponseEntity.notFound().build();
        }
     }
+
+    @PutMapping("request/api/{roomNumber}")
+    public ResponseEntity<?> updateRoom(@PathVariable Long roomNumber,@RequestBody RoomEntity room)
+    {
+        room.setRoomNumber(roomNumber);
+        Optional<RoomEntity> response = Optional.ofNullable(roomService.updateRoom(room));
+        Map<String, Object> responseBody = new HashMap<>();
+        if (response.isPresent()) {
+            responseBody.put("room", response.get());
+            responseBody.put("error", null);
+            return ResponseEntity.status(HttpStatus.CREATED).body(responseBody);
+        }
+        else {
+            responseBody.put("room", null);
+            responseBody.put("error", "Not able to create");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(responseBody);
+        }
+
+    }
+
+    @DeleteMapping("request/{roomNumber}")
+    public ResponseEntity<?> deleteRoom(@PathVariable Long roomNumber)
+    {
+        return roomService.deleteRoom(roomNumber) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
+
+
 }
