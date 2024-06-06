@@ -19,7 +19,6 @@ public class RoomController {
     private RoomService roomService;
 
     @PostMapping("request/api/room")
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> createRoom(@RequestBody RoomEntity room) {
         Optional<RoomEntity> response = Optional.ofNullable(roomService.createRoom(room));
         Map<String, Object> responseBody = new HashMap<>();

@@ -25,6 +25,7 @@ public class CustomerService {
         int age = Period.between(dateOfBirth, current).getYears();
         return age > 18;
     }
+
     public CustomerEntity createCustomer(CustomerEntity customer) {
         if(customerRepository.findByUserName(customer.getUserName()).isPresent())
         {
@@ -37,7 +38,6 @@ public class CustomerService {
             String encryptedpwd = bcrypt.encode(customer.getPassword());
             customer.setPassword(encryptedpwd);
             return customerRepository.save(customer);
-//            return customer;
     }
 
     public Optional<CustomerEntity> getCustomerById(Long id)
@@ -70,5 +70,4 @@ public class CustomerService {
             return false;
         }
     }
-
 }

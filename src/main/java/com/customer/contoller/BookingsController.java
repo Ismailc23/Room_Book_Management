@@ -47,6 +47,7 @@ public class BookingsController {
             return ResponseEntity.notFound().build();
         }
     }
+
     @GetMapping("customers/{id}/{roomNumber}")
     public ResponseEntity<?> getBookingsByCustomerIdAndRoomNumber(@PathVariable("id") Long customerId,@PathVariable("roomNumber") Long roomNumber) {
         Optional<BookingsEntity> bookings = bookingsService.getBookingsByCustomerIdAndRoomNumber(customerId, roomNumber);
