@@ -27,6 +27,7 @@ public class CustomerService {
     }
 
     public CustomerEntity createCustomer(CustomerEntity customer) {
+        //creating a customer
         if(customerRepository.findByUserName(customer.getUserName()).isPresent())
         {
             return null;
