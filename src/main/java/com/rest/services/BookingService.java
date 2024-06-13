@@ -7,13 +7,19 @@ import com.rest.Entity.RoomEntity;
 import com.rest.Repository.BookingRepository;
 import com.rest.Repository.CustomerRepository;
 import com.rest.Repository.RoomRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class BookingService {
+
+    private static final Logger logger = LoggerFactory.getLogger(BookingService.class);
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -24,10 +30,13 @@ public class BookingService {
     @Autowired
     private BookingRepository bookingRepository;
 
+
     public BookingEntity createBookings(Long customerId, Long roomNumber, BookingEntity bookings) {
         Optional<CustomerEntity> customer = customerRepository.findById(customerId);
+        logger.info("CustomerDetails {}", customer);
         Optional<RoomEntity> room = roomRepository.findById(roomNumber);
         if (!customer.isPresent() || !room.isPresent() || !room.get().isAvailable()) {
+            logger.info("No customer Details {}", customer);
             return null;
         }
         else
@@ -64,7 +73,8 @@ public class BookingService {
             BookingEntity booking = optionalBooking.get();
 
             if (bookingPatchDTO.getBookedDate() != null) {
-                booking.setBookedDate(bookingPatchDTO.getBookedDate());
+
+                ;
             }
             if (bookingPatchDTO.getStayStartDate() != null) {
                 booking.setStayStartDate(bookingPatchDTO.getStayStartDate());

@@ -27,6 +27,7 @@ public class BookingEntity {
 
     private int roomPrice;
 
+    @OneToOne
     @JoinColumn(name = "room_Number",nullable = false)
     @JsonIgnore
     private RoomEntity room;
