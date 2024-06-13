@@ -1,12 +1,16 @@
 package com.customer.services;
 
-import com.customer.CustomerRepository;
-import com.customer.Entity.Customer;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 
+import com.customer.Entity.CustomerEntity;
+import com.customer.Repository.CustomerRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Optional;
 
 @Service
@@ -14,26 +18,57 @@ public class CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
-    public String createCustomer(Customer customer) {
-        try {
-            if (customer.getPassword().length() < 8 || customer.getPassword().length() > 10) {
-                return "Password length should be between 8 and 10";
-            }
-            if (existsByUsername(customer.getUsername())) {
-                return "Username already exists";
-            }
-            customerRepository.save(customer);
-            return "Customer Saved";
-        } catch (Exception e) {
-            return "Error occurred: " + e.getMessage();
-        }
+
+    public boolean isCustomerAbove18(CustomerEntity customer) {
+        LocalDate current = LocalDate.now();
+        LocalDate dateOfBirth = customer.getDateOfBirth().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int age = Period.between(dateOfBirth, current).getYears();
+        return age > 18;
     }
 
-    public Optional<Customer> getCustomerById(Long id) {
+    public CustomerEntity createCustomer(CustomerEntity customer) {
+        //creating a customer
+        if(customerRepository.findByUserName(customer.getUserName()).isPresent())
+        {
+            return null;
+        }
+        if (!isCustomerAbove18(customer)) {
+            return null;
+        }
+            BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+            String encryptedpwd = bcrypt.encode(customer.getPassword());
+            customer.setPassword(encryptedpwd);
+            return customerRepository.save(customer);
+    }
+
+    public Optional<CustomerEntity> getCustomerById(Long id)
+    {
         return customerRepository.findById(id);
     }
 
-    public boolean existsByUsername(String username) {
-        return customerRepository.existsByUsername(username);
+
+    public CustomerEntity updateCustomer(CustomerEntity customer) {
+        Optional<CustomerEntity> existCustomer = customerRepository.findById(customer.getCustomerId());
+        if (!existCustomer.isPresent()) {
+            return null;
+        }
+        if (customerRepository.existsByUserName(customer.getUserName()))
+        {
+            return null;
+        }
+        return customerRepository.save(customer);
+    }
+
+
+    public boolean deleteCustomer(Long id)
+    {
+        if(customerRepository.existsById(id))
+        {
+            customerRepository.deleteById(id);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
