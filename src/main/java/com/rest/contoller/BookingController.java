@@ -3,6 +3,8 @@ package com.rest.contoller;
 import com.rest.Entity.BookingEntity;
 import com.rest.Entity.BookingPatchDTO;
 import com.rest.services.BookingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,8 @@ import java.util.Optional;
 @RestController
 public class BookingController {
 
+    private static final Logger logger = LoggerFactory.getLogger(BookingService.class);
+
     @Autowired
     private BookingService bookingService;
 
@@ -19,6 +23,7 @@ public class BookingController {
     public ResponseEntity<?> createBooking(@PathVariable("id") Long customerId, @PathVariable("roomNumber") Long roomNumber,@RequestBody BookingEntity bookings) {
         BookingEntity createdBooking = bookingService.createBookings(customerId, roomNumber, bookings);
         if (createdBooking != null) {
+            logger.debug("Created the booking {}", createdBooking);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdBooking);
         }
         else {

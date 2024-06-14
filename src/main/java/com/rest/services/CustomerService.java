@@ -49,17 +49,8 @@ public class CustomerService {
     @Transactional
     public CustomerEntity updateCustomer(CustomerEntity customer) {
         Optional<CustomerEntity> existCustomer = customerRepository.findById(customer.getCustomerId());
-        List<BookingEntity> existBookings = bookingRepository.findByCustomer_CustomerId(customer.getCustomerId());
         if (!existCustomer.isPresent() || customerRepository.existsByUserName(customer.getUserName())) {
             return null;
-        }
-        if(!existBookings.isEmpty()) {
-            for (BookingEntity bookings :existBookings){
-                bookings.setCustomer(customer);
-                bookings.setCustomerFirstName(customer.getFirstName());
-                bookings.setCustomerLastName(customer.getLastName());
-                bookingRepository.save(bookings);
-            }
         }
         customerRepository.save(customer);
         return customer;
@@ -68,7 +59,6 @@ public class CustomerService {
     @Transactional
     public boolean deleteCustomer(Long id) {
         if(customerRepository.existsById(id)) {
-            bookingRepository.deleteByCustomer_CustomerId(id);
             customerRepository.deleteById(id);
             return true;
         }

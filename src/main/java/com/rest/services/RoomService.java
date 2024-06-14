@@ -33,16 +33,8 @@ public class RoomService {
     @Transactional
     public RoomEntity updateRoom(RoomEntity room) {
         Optional<RoomEntity> existRoom = roomRepository.findById(room.getRoomNumber());
-        Optional<BookingEntity> existBooking = bookingRepository.findByRoom_RoomNumber(room.getRoomNumber());
         if(!existRoom.isPresent()) {
             return null;
-        }
-        if(existBooking.isPresent()) {
-            BookingEntity bookings = bookingRepository.getByRoom_RoomNumber(room.getRoomNumber());
-            bookings.setRoom(room);
-            bookings.setRoomPrice(room.getPrice());
-            bookings.setRoomType(room.getType());
-            bookingRepository.save(bookings);
         }
         return roomRepository.save(room);
     }

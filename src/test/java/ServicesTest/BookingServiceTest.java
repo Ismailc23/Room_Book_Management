@@ -185,18 +185,6 @@ public class BookingServiceTest {
         assertNotNull(patchBooking);
     }
 
-//    @Test
-//    void testGetPatchBookingWithoutStayStartDate()
-//    {
-//        bookingPatchDTO.setBookedDate(Date.from(LocalDate.of(2024, 6, 10).atStartOfDay(ZoneId.systemDefault()).toInstant()));
-//        bookingPatchDTO.setStayEndDate(Date.from(LocalDate.of(2024, 6, 30).atStartOfDay(ZoneId.systemDefault()).toInstant()));
-//        when(bookingRepository.findById(1L)).thenReturn(Optional.of(booking));
-//        when(roomRepository.findById(100L)).thenReturn(Optional.of(room));
-//        when(bookingRepository.save(booking)).thenReturn(booking);
-//        BookingEntity patchBooking1 = bookingService.patchBooking(1L, bookingPatchDTO);
-//        assertNotNull(patchBooking1);
-//    }
-
     @Test
     void testGetPatchBookingWithoutStayEndDate()
     {

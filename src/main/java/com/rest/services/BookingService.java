@@ -31,16 +31,14 @@ public class BookingService {
     private BookingRepository bookingRepository;
 
 
-    public BookingEntity createBookings(Long customerId, Long roomNumber, BookingEntity bookings) {
+     public BookingEntity createBookings (Long customerId, Long roomNumber, BookingEntity bookings){
         Optional<CustomerEntity> customer = customerRepository.findById(customerId);
         logger.info("CustomerDetails {}", customer);
         Optional<RoomEntity> room = roomRepository.findById(roomNumber);
+         logger.info("Room Details {}", room);
         if (!customer.isPresent() || !room.isPresent() || !room.get().isAvailable()) {
-            logger.info("No customer Details {}", customer);
             return null;
-        }
-        else
-        {
+        } else {
             bookings.setCustomer(customer.get());
             bookings.setRoom(room.get());
             bookings.setCustomerFirstName(customer.get().getFirstName());
@@ -59,6 +57,7 @@ public class BookingService {
         }
     }
 
+
     public Optional<BookingEntity> getBookingsByReferenceId(Long referenceId) {
         return bookingRepository.findById(referenceId);
     }
@@ -67,33 +66,30 @@ public class BookingService {
     }
 
     public BookingEntity patchBooking(Long id, BookingPatchDTO bookingPatchDTO) {
-        Optional<BookingEntity> optionalBooking = bookingRepository.findById(id);
+            Optional<BookingEntity> optionalBooking = bookingRepository.findById(id);
 
-        if (optionalBooking.isPresent()) {
-            BookingEntity booking = optionalBooking.get();
+            if (optionalBooking.isPresent()) {
+                BookingEntity booking = optionalBooking.get();
 
-            if (bookingPatchDTO.getBookedDate() != null) {
-
-                ;
-            }
-            if (bookingPatchDTO.getStayStartDate() != null) {
-                booking.setStayStartDate(bookingPatchDTO.getStayStartDate());
-            }
-            if (bookingPatchDTO.getStayEndDate() != null) {
-                booking.setStayEndDate(bookingPatchDTO.getStayEndDate());
-            }
-            Date currentDate = new Date();
-            Optional<RoomEntity> room = roomRepository.findById(optionalBooking.get().getRoom().getRoomNumber());
-            if(currentDate.after(bookingPatchDTO.getStayStartDate()) && currentDate.before(bookingPatchDTO.getStayEndDate())) {
-                room.get().setAvailable(false);
+                if (bookingPatchDTO.getBookedDate() != null) {
+                }
+                if (bookingPatchDTO.getStayStartDate() != null) {
+                    booking.setStayStartDate(bookingPatchDTO.getStayStartDate());
+                }
+                if (bookingPatchDTO.getStayEndDate() != null) {
+                    booking.setStayEndDate(bookingPatchDTO.getStayEndDate());
+                }
+                Date currentDate = new Date();
+                Optional<RoomEntity> room = roomRepository.findById(optionalBooking.get().getRoom().getRoomNumber());
+                if (currentDate.after(bookingPatchDTO.getStayStartDate()) && currentDate.before(bookingPatchDTO.getStayEndDate())) {
+                    room.get().setAvailable(false);
+                } else {
+                    room.get().setAvailable(true);
+                }
+                return bookingRepository.save(booking);
             } else {
-                room.get().setAvailable(true);
+                return null;
             }
-            return bookingRepository.save(booking);
-        }
-        else
-        {
-            return null;
-        }
     }
+
 }
