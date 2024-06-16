@@ -42,7 +42,6 @@ public class RoomService {
     @Transactional
     public boolean deleteRoom(Long roomNumber) {
         if(roomRepository.existsById(roomNumber)) {
-            bookingRepository.deleteByRoom_RoomNumber(roomNumber);
             roomRepository.deleteById(roomNumber);
             return true;
         }
