@@ -1,7 +1,10 @@
 package com.rest.contoller;
 
+import com.rest.services.BookingService;
 import com.rest.services.CustomerService;
 import com.rest.Entity.CustomerEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,9 @@ public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
+
+    private static final Logger logger = LoggerFactory.getLogger(BookingService.class);
+
 
     @PostMapping("/request/api/customer")
     public ResponseEntity<?> createCustomer(@RequestBody CustomerEntity customer) {
@@ -27,9 +33,11 @@ public class CustomerController {
     @GetMapping("/request/api/customer/{id}")
     public ResponseEntity<?> getCustomer(@PathVariable Long id) {
       if(customerService.getCustomerById(id).isPresent()){
+            logger.debug("Customer is present : ");
             return ResponseEntity.ok().body(customerService.getCustomerById(id).get());
         }
       else {
+          logger.debug("Customer is not present");
             return ResponseEntity.notFound().build();
         }
     }

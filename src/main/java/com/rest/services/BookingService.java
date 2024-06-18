@@ -12,9 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,7 +48,7 @@ public class BookingService {
          }
          if(bookings.getStayStartDate().isBefore(LocalDate.now()) || bookings.getStayEndDate().isBefore(bookings.getStayStartDate()))
          {
-             logger.info("Validate Dates");
+             logger.debug("Validate Dates");
              return null;
          }
          else {
@@ -61,10 +59,10 @@ public class BookingService {
             bookings.setRoomType(room.get().getType());
             bookings.setRoomPrice(room.get().getPrice());
             bookingRepository.save(bookings);
+            logger.debug("Bookings is made successfully : {}",bookings);
             return bookings;
         }
     }
-
 
     public Optional<BookingEntity> getBookingsByReferenceId(Long referenceId) {
         return bookingRepository.findById(referenceId);
