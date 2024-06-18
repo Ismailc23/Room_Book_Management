@@ -1,5 +1,6 @@
 package com.rest.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -38,5 +39,6 @@ public class CustomerEntity {
     private String password;
 
     @OneToMany(mappedBy = "customer")
+    @JsonIgnore
     private List<BookingEntity> bookings;
 }

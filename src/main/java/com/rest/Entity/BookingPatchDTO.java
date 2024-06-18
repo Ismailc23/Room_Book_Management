@@ -2,15 +2,16 @@ package com.rest.Entity;
 
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
 public class BookingPatchDTO
 {
-    private Date bookedDate;
+    private LocalDate bookedDate;
 
-    private Date stayStartDate;
+    private LocalDate stayStartDate;
 
-    private Date stayEndDate;
+    private LocalDate stayEndDate;
 
 }

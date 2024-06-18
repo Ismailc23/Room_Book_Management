@@ -3,6 +3,8 @@ package com.rest.Entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -27,15 +29,15 @@ public class BookingEntity {
 
     private int roomPrice;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "room_Number",nullable = false)
     @JsonIgnore
     private RoomEntity room;
 
     @Column(name = "booked_date")
-    private Date bookedDate;
+    private LocalDate bookedDate;
 
-    private Date stayStartDate;
+    private LocalDate stayStartDate;
 
-    private Date stayEndDate;
+    private LocalDate stayEndDate;
 }
