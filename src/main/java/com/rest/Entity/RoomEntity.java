@@ -17,8 +17,4 @@ public class RoomEntity {
     private int price;
 
     private String type;
-
-    @OneToMany(mappedBy = "room")
-    @JsonIgnore
-    private List<BookingEntity> bookings;
 }

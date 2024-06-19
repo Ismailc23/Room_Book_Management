@@ -38,7 +38,4 @@ public class CustomerEntity {
     @NotBlank
     private String password;
 
-    @OneToMany(mappedBy = "customer")
-    @JsonIgnore
-    private List<BookingEntity> bookings;
 }

@@ -39,7 +39,6 @@ public class RoomServiceTest {
         room = new RoomEntity();
         room.setRoomNumber(100L);
         room.setType("3BHK");
-        room.setAvailable(true);
         room.setPrice(1000);
     }
 
@@ -90,7 +89,7 @@ public class RoomServiceTest {
         updatedRoom.setType("3BHK");
 
         when(roomRepository.findById(100L)).thenReturn(Optional.of(room));
-        when(bookingRepository.findByRoom_RoomNumber(100L)).thenReturn(Optional.of(booking));
+//        when(bookingRepository.findByRoom_RoomNumber(100L)).thenReturn(Optional.of(booking));
         when(bookingRepository.getByRoom_RoomNumber(100L)).thenReturn(booking);
         RoomEntity updateRoom = roomService.updateRoom(updatedRoom);
         assertNotNull(updatedRoom);
@@ -109,7 +108,7 @@ public class RoomServiceTest {
     void testupdateRoomFailureNoBooking()
     {
         when(roomRepository.findById(100L)).thenReturn(Optional.of(room));
-        when(bookingRepository.findByRoom_RoomNumber(100L)).thenReturn(Optional.empty());
+//        when(bookingRepository.findByRoom_RoomNumber(100L)).thenReturn(Optional.empty());
         RoomEntity noUpdate = roomService.updateRoom(room);
         assertNull(noUpdate);
     }

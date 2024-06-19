@@ -1,60 +1,78 @@
 package com.rest.contoller;
 
+import com.rest.ExceptionHandling.CustomerExceptions.CustomerNotFoundException;
+import com.rest.ExceptionHandling.CustomerExceptions.InvalidAgeCustomerException;
+import com.rest.ExceptionHandling.CustomerExceptions.UserNameAlreadyException;
 import com.rest.services.BookingService;
 import com.rest.services.CustomerService;
 import com.rest.Entity.CustomerEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.xml.transform.OutputKeys;
 import java.util.Optional;
 
+@Slf4j
 @RestController
 public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
 
-    private static final Logger logger = LoggerFactory.getLogger(BookingService.class);
-
-
     @PostMapping("/request/api/customer")
     public ResponseEntity<?> createCustomer(@RequestBody CustomerEntity customer) {
-        Optional<CustomerEntity> response = Optional.ofNullable(customerService.createCustomer(customer));
-        if (response.isPresent()) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(response.get());
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Not able to create");
+        try {
+            CustomerEntity createdCustomer = customerService.createCustomer(customer);
+            log.debug("Customer is created");
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdCustomer);
+        }
+        catch (UserNameAlreadyException | InvalidAgeCustomerException e) {
+            log.error("Customer with id {} is not created",customer.getCustomerId());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+
         }
     }
 
     @GetMapping("/request/api/customer/{id}")
     public ResponseEntity<?> getCustomer(@PathVariable Long id) {
-      if(customerService.getCustomerById(id).isPresent()){
-            logger.debug("Customer is present : ");
-            return ResponseEntity.ok().body(customerService.getCustomerById(id).get());
+        try {
+            Optional<CustomerEntity> customer = customerService.getCustomerById(id);
+            log.debug("Customer with ID : {} is present", id);
+            return ResponseEntity.ok().body(customer);
         }
-      else {
-          logger.debug("Customer is not present");
-            return ResponseEntity.notFound().build();
+        catch (CustomerNotFoundException e) {
+            log.error("Customer is not present with Id : {}", id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @PutMapping("/request/api/customer/{id}")
-    public ResponseEntity<?> updateCustomer(@PathVariable Long id,@RequestBody CustomerEntity customer) {
+    public ResponseEntity<?> updateCustomer(@PathVariable Long id, @RequestBody CustomerEntity customer) {
         customer.setCustomerId(id);
-        Optional<CustomerEntity> response = Optional.ofNullable(customerService.updateCustomer(customer));
-        if (response.isPresent()) {
-            return ResponseEntity.status(HttpStatus.OK).body(response.get());
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Not able to Update");
+        try {
+            CustomerEntity updatedCustomer = customerService.updateCustomer(customer);
+            return ResponseEntity.status(HttpStatus.OK).body(updatedCustomer);
+        }
+        catch (UserNameAlreadyException | InvalidAgeCustomerException e) {
+            log.error("Customer is not present with Id : {}", id);
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(e.getMessage());
         }
     }
 
     @DeleteMapping("/request/api/customer/{id}")
     public ResponseEntity<?> deleteCustomer(@PathVariable Long id) {
-        return customerService.deleteCustomer(id) ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+        try {
+            boolean deletedCustomer = customerService.deleteCustomer(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Customer deleted successfully");
+        }
+        catch (CustomerNotFoundException e) {
+            log.error("Customer is not present with Id : {}", id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 }
