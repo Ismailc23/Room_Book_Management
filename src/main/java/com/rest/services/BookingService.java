@@ -44,24 +44,22 @@ public class BookingService {
          }
          List<BookingEntity> existingBookings = bookingRepository.findOverlapBookings(room.get().getRoomNumber(), bookings.getStayEndDate(),bookings.getStayStartDate());
          if(!existingBookings.isEmpty()) {
-             log.debug("Bookings Exist : {}" , existingBookings);
+             log.debug("Bookings Exist for the given dates : {}" , existingBookings);
              throw new ExistOverlappingDatesException("The provided dates overlaps the already done booking date for the given room number : "+roomNumber);
          }
          if(bookings.getStayStartDate().isBefore(LocalDate.now()) || bookings.getStayEndDate().isBefore(bookings.getStayStartDate())) {
-             log.debug("Invalid Dates given");
+             log.debug("Invalid Dates are given");
              throw new InvalidDateException("The date provided is invalid");
          }
-         else {
-            bookings.setCustomer(customer.get());
-            bookings.setRoom(room.get());
-            bookings.setCustomerFirstName(customer.get().getFirstName());
-            bookings.setCustomerLastName(customer.get().getLastName());
-            bookings.setRoomType(room.get().getType());
-            bookings.setRoomPrice(room.get().getPrice());
-            bookingRepository.save(bookings);
-            log.debug("Bookings is made successfully : {}",bookings);
-            return bookings;
-        }
+         bookings.setCustomer(customer.get());
+         bookings.setRoom(room.get());
+         bookings.setCustomerFirstName(customer.get().getFirstName());
+         bookings.setCustomerLastName(customer.get().getLastName());
+         bookings.setRoomType(room.get().getType());
+         bookings.setRoomPrice(room.get().getPrice());
+         bookingRepository.save(bookings);
+         log.debug("Bookings is made successfully : {}",bookings);
+         return bookings;
     }
 
     public Optional<BookingEntity> getBookingsByReferenceId(Long referenceId) {
@@ -81,11 +79,9 @@ public class BookingService {
     }
 
     public BookingEntity patchBooking(Long id, BookingPatchDTO bookingPatchDTO) {
-            Optional<BookingEntity> optionalBooking = bookingRepository.findById(id);
-
-            if (optionalBooking.isPresent()) {
-                BookingEntity booking = optionalBooking.get();
-
+            Optional<BookingEntity> patchBooking = bookingRepository.findById(id);
+            BookingEntity booking = patchBooking.get();
+            if (patchBooking.isPresent()) {
                 if (bookingPatchDTO.getBookedDate() != null) {
                     booking.setBookedDate(bookingPatchDTO.getBookedDate());
                 }
@@ -100,8 +96,6 @@ public class BookingService {
                 log.info("Patch End Date : {}",bookingPatchDTO.getStayEndDate());
                 return bookingRepository.save(booking);
             }
-            else {
-                return null;
-            }
+            return null;
     }
 }

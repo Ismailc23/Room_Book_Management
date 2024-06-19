@@ -25,9 +25,11 @@ public class BookingController {
     public ResponseEntity<?> createBooking(@PathVariable("id") Long customerId, @PathVariable("roomNumber") Long roomNumber,@RequestBody BookingEntity bookings) {
         try {
             BookingEntity createdBooking = bookingService.createBookings(customerId, roomNumber, bookings);
+            log.debug("Booking is done successfully");
             return ResponseEntity.status(HttpStatus.CREATED).body(createdBooking);
         }
         catch (CustomerNotPresentException | ExistOverlappingDatesException | InvalidDateException | RoomNotPresentException e) {
+            log.error("Booking is not created");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
@@ -36,9 +38,11 @@ public class BookingController {
     public ResponseEntity<?> getBookings(@PathVariable long referenceId) {
         try {
             Optional<BookingEntity> bookings = bookingService.getBookingsByReferenceId(referenceId);
+            log.debug("Fetching booking succesfful");
             return ResponseEntity.status(HttpStatus.OK).body(bookings.get());
         }
         catch(BookingNotFoundException e) {
+            log.error("Booking is not found to fetch");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -47,6 +51,7 @@ public class BookingController {
     public ResponseEntity<?> getBookingByCustomerIdAndRoomNumber(@PathVariable("id") Long customerId,@PathVariable("roomNumber") Long roomNumber) {
         try {
             Optional<BookingEntity> bookings = bookingService.getBookingsByCustomerIdAndRoomNumber(customerId, roomNumber);
+            log.debug("Fetching booking succesful");
             return ResponseEntity.status(HttpStatus.OK).body(bookings.get());
         }
         catch(BookingNotFoundException e) {

@@ -13,6 +13,6 @@ public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
     @Query("SELECT a FROM BookingEntity a WHERE a.customer.customerId = :customerId AND a.room.roomNumber = :roomNumber")
     Optional<BookingEntity> findByCustomerIdAndRoomNumber(@Param("customerId") Long customerId, @Param("roomNumber") Long roomNumber);
 
-    @Query(value = "SELECT * FROM booking WHERE room_Number = :roomNumber AND stay_start_date <= :stayEndDate AND stay_end_date >= :stayStartDate", nativeQuery = true)
+    @Query("SELECT b FROM BookingEntity b WHERE b.room.roomNumber = :roomNumber AND b.stayStartDate <= :stayEndDate AND b.stayEndDate >= :stayStartDate")
     List<BookingEntity> findOverlapBookings(@Param("roomNumber") Long roomNumber, @Param("stayEndDate") LocalDate stayEndDate, @Param("stayStartDate") LocalDate stayStartDate);
 }
