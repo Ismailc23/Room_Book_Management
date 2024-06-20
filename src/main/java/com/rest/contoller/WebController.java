@@ -15,26 +15,26 @@ public class WebController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("")
+    @GetMapping("/login")
     public String viewHomePage()
     {
-        return "HomePage";
+        return "LoginPage";
     }
 
-    @GetMapping("/register")
+    @GetMapping("/signUp")
     public String registerForm(Model model) {
         model.addAttribute("user", new UserEntity());
-        return "registerForm";
+        return "SignUpPage";
     }
 
     @PostMapping("/registrationMethod")
-    public String registrationProcess(UserEntity user)
-    {
-        if(userRepository.existsByUserName(user.getUserName()))
-        {
-            return "registrationFailure";
+    public String registrationProcess(UserEntity user, Model model) {
+        if (userRepository.existsByUserName(user.getUserName())) {
+            model.addAttribute("errorMessage", "Username already exists");
+            model.addAttribute("user", user);
+            return "SignUpPage";
         }
         userRepository.save(user);
-        return "registrationSuccess";
+        return "LoginPage";
     }
 }
