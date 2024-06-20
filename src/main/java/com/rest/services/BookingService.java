@@ -9,12 +9,10 @@ import com.rest.Repository.BookingRepository;
 import com.rest.Repository.CustomerRepository;
 import com.rest.Repository.RoomRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
-import java.util.InvalidPropertiesFormatException;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,12 +42,17 @@ public class BookingService {
          }
          List<BookingEntity> existingBookings = bookingRepository.findOverlapBookings(room.get().getRoomNumber(), bookings.getStayEndDate(),bookings.getStayStartDate());
          if(!existingBookings.isEmpty()) {
-             log.debug("Bookings Exist for the given dates : {}" , existingBookings);
+             log.debug("Bookings already exist for the given dates : {}" , existingBookings);
              throw new ExistOverlappingDatesException("The provided dates overlaps the already done booking date for the given room number : "+roomNumber);
          }
          if(bookings.getStayStartDate().isBefore(LocalDate.now()) || bookings.getStayEndDate().isBefore(bookings.getStayStartDate())) {
              log.debug("Invalid Dates are given");
              throw new InvalidDateException("The date provided is invalid");
+         }
+         long daysBetween = ChronoUnit.DAYS.between(bookings.getStayStartDate(), bookings.getStayEndDate());
+
+         if (daysBetween > 30) {
+             throw new InvalidDateException("Maximum stay duration is 30 days.");
          }
          bookings.setCustomer(customer.get());
          bookings.setRoom(room.get());

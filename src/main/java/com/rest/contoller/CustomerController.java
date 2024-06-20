@@ -31,10 +31,12 @@ public class CustomerController {
             log.debug("Customer is created");
             return ResponseEntity.status(HttpStatus.CREATED).body(createdCustomer);
         }
-        catch (UserNameAlreadyException | InvalidAgeCustomerException e) {
-            log.error("Customer with id {} is not created",customer.getCustomerId());
+        catch (InvalidAgeCustomerException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-
+        }
+        catch (UserNameAlreadyException e) {
+            log.error("Username already exist");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 

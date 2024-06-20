@@ -28,11 +28,15 @@ public class BookingController {
             log.debug("Booking is done successfully");
             return ResponseEntity.status(HttpStatus.CREATED).body(createdBooking);
         }
-        catch (CustomerNotPresentException | ExistOverlappingDatesException | InvalidDateException | RoomNotPresentException e) {
+        catch (CustomerNotPresentException | InvalidDateException | RoomNotPresentException e) {
             log.error("Booking is not created");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-    }
+        catch(ExistOverlappingDatesException e) {
+            log.error("Dates provided are overlapping with the bookings in the database");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+        }
 
     @GetMapping("/bookings/{referenceId}")
     public ResponseEntity<?> getBookings(@PathVariable long referenceId) {
