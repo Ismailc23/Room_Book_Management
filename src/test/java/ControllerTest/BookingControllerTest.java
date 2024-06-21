@@ -87,31 +87,31 @@ public class BookingControllerTest {
         assertEquals("Not able to create the booking",createdBooking.getBody());
     }
 
-//    @Test
-//    void testGetBookingByRefIdSuccess()
-//    {
-//        when(bookingService.getBookingsByReferenceId(1L)).thenReturn(Optional.of(booking));
-//        ResponseEntity<?> getCustomer = bookingController.getBookings(1L);
-//        assertEquals(HttpStatus.OK,getCustomer.getStatusCode());
-//        assertEquals(booking,getCustomer.getBody());
-//    }
-//
-//    @Test
-//    void testNoGetBookingRefIdFailure()
-//    {
-//        when(bookingService.getBookingsByReferenceId(1L)).thenReturn(Optional.empty());
-//        ResponseEntity<?> getCustomer = bookingController.getBookings(1L);
-//        assertEquals(HttpStatus.NOT_FOUND,getCustomer.getStatusCode());
-//    }
+    @Test
+    void testGetBookingByRefIdSuccess()
+    {
+        when(bookingService.getBookingsByReferenceId(1L)).thenReturn(Optional.of(booking));
+        ResponseEntity<?> getCustomer = bookingController.getBookings(1L);
+        assertEquals(HttpStatus.OK,getCustomer.getStatusCode());
+        assertEquals(booking,getCustomer.getBody());
+    }
 
-//    @Test
-//    void testGetBookingByCustomerIdAndRoomNumberSuccess()
-//    {
-//        when(bookingService.getBookingsByCustomerIdAndRoomNumber(1L,100L)).thenReturn(Optional.of(booking));
-//        ResponseEntity<?> getCustomer = bookingController.getBookingByCustomerIdAndRoomNumber(1L,100L);
-//        assertEquals(HttpStatus.OK,getCustomer.getStatusCode());
-//        assertEquals(booking,getCustomer.getBody());
-//    }
+    @Test
+    void testNoGetBookingRefIdFailure()
+    {
+        when(bookingService.getBookingsByReferenceId(1L)).thenReturn(Optional.empty());
+        ResponseEntity<?> getCustomer = bookingController.getBookings(1L);
+        assertEquals(HttpStatus.NOT_FOUND,getCustomer.getStatusCode());
+    }
+
+    @Test
+    void testGetBookingByCustomerIdAndRoomNumberSuccess()
+    {
+        when(bookingService.getBookingsByCustomerIdAndRoomNumber(1L,100L)).thenReturn(Optional.of(booking));
+        ResponseEntity<?> getCustomer = bookingController.getBookingByCustomerIdAndRoomNumber(1L,100L);
+        assertEquals(HttpStatus.OK,getCustomer.getStatusCode());
+        assertEquals(booking,getCustomer.getBody());
+    }
 
     @Test
     void testGetBookingByCustomerIdAndRoomNumberFailure()
