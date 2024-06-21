@@ -1,13 +1,16 @@
 package com.rest.contoller;
 
 import com.rest.Entity.UserEntity;
-import com.rest.ExceptionHandling.CustomerExceptions.UserNameAlreadyException;
 import com.rest.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.time.LocalDate;
+import java.util.Optional;
 
 @Controller
 public class WebController {
@@ -16,7 +19,7 @@ public class WebController {
     private UserRepository userRepository;
 
     @GetMapping("/login")
-    public String viewHomePage()
+    public String viewLoginPage()
     {
         return "LoginPage";
     }
@@ -37,4 +40,40 @@ public class WebController {
         userRepository.save(user);
         return "LoginPage";
     }
+
+    @PostMapping("/loginMethod")
+    public String loginMethod(@RequestParam("username") String username, @RequestParam("password") String password, Model model){
+        Optional<UserEntity> user = userRepository.findByUserName(username);
+        if (user.isEmpty() || !user.get().getPassword().equals(password)) {
+            model.addAttribute("errorMessage", "Invalid username or password");
+            return "LoginPage";
+        }
+        else {
+            return "HomePage";
+        }
+    }
+
+    @GetMapping("/homepage")
+    public String viewHomePage() {
+        return "HomePage";
+    }
+
+    @PostMapping("/checkInMethod")
+    public String checkIn(@RequestParam("customerId") Long customerId, @RequestParam("roomNumber") Long roomNumber, @RequestParam("checkInDate") LocalDate checkInDate, Model model) {
+        // Implement the check-in logic
+        return "HomePage";
+    }
+
+    @PostMapping("/checkOutMethod")
+    public String checkOut(@RequestParam("customerId") Long customerId, @RequestParam("roomNumber") Long roomNumber, Model model) {
+        // Implement the check-out logic
+        return "HomePage";
+    }
+
+    @PostMapping("/checkAvailabilityMethod")
+    public String checkAvailability(@RequestParam("checkInDate") LocalDate checkInDate, @RequestParam("checkOutDate") LocalDate checkOutDate, Model model) {
+        // Implement the room availability checking logic
+        return "HomePage";
+    }
+
 }

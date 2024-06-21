@@ -36,7 +36,7 @@ public class BookingController {
             log.error("Dates provided are overlapping with the bookings in the database");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
-        }
+    }
 
     @GetMapping("/bookings/{referenceId}")
     public ResponseEntity<?> getBookings(@PathVariable long referenceId) {

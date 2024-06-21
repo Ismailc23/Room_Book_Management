@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <title>Login Page</title>
 
@@ -10,16 +10,19 @@
 <div class="container">
     <div class="d-flex justify-content-center h-100">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header text-center">
                 <h3>Log In</h3>
             </div>
             <div class="card-body">
-                <form>
-                    <div class="input-group form-group">
-                        <input type="text" class="form-control" placeholder="username">
+                <form th:action="@{/loginMethod}" method="post">
+                    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                        <span th:text="${errorMessage}"></span>
                     </div>
                     <div class="input-group form-group">
-                        <input type="password" class="form-control" placeholder="password">
+                        <input type="text" class="form-control" placeholder="username" name="username" required/>
+                    </div>
+                    <div class="input-group form-group">
+                        <input type="password" class="form-control" placeholder="password" name="password" required />
                     </div>
                     <div class="row align-items-center remember">
                         <input type="checkbox">Remember Me
