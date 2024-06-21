@@ -52,28 +52,4 @@ public class WebController {
             return "HomePage";
         }
     }
-
-    @GetMapping("/homepage")
-    public String viewHomePage() {
-        return "HomePage";
-    }
-
-    @PostMapping("/checkInMethod")
-    public String checkIn(@RequestParam("customerId") Long customerId, @RequestParam("roomNumber") Long roomNumber, @RequestParam("checkInDate") LocalDate checkInDate, Model model) {
-        // Implement the check-in logic
-        return "HomePage";
-    }
-
-    @PostMapping("/checkOutMethod")
-    public String checkOut(@RequestParam("customerId") Long customerId, @RequestParam("roomNumber") Long roomNumber, Model model) {
-        // Implement the check-out logic
-        return "HomePage";
-    }
-
-    @PostMapping("/checkAvailabilityMethod")
-    public String checkAvailability(@RequestParam("checkInDate") LocalDate checkInDate, @RequestParam("checkOutDate") LocalDate checkOutDate, Model model) {
-        // Implement the room availability checking logic
-        return "HomePage";
-    }
-
 }
