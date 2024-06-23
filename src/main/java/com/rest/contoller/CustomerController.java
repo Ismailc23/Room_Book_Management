@@ -2,19 +2,15 @@ package com.rest.contoller;
 
 import com.rest.ExceptionHandling.CustomerExceptions.CustomerNotFoundException;
 import com.rest.ExceptionHandling.CustomerExceptions.InvalidAgeCustomerException;
-import com.rest.ExceptionHandling.CustomerExceptions.UserNameAlreadyException;
-import com.rest.services.BookingService;
+import com.rest.ExceptionHandling.CustomerExceptions.UserNameAlreadyExistException;
 import com.rest.services.CustomerService;
 import com.rest.Entity.CustomerEntity;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.xml.transform.OutputKeys;
 import java.util.Optional;
 
 @Slf4j
@@ -34,7 +30,7 @@ public class CustomerController {
         catch (InvalidAgeCustomerException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        catch (UserNameAlreadyException e) {
+        catch (UserNameAlreadyExistException e) {
             log.error("Username already exist");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
@@ -60,7 +56,7 @@ public class CustomerController {
             CustomerEntity updatedCustomer = customerService.updateCustomer(customer);
             return ResponseEntity.status(HttpStatus.OK).body(updatedCustomer);
         }
-        catch (UserNameAlreadyException | InvalidAgeCustomerException e) {
+        catch (UserNameAlreadyExistException | InvalidAgeCustomerException e) {
             log.error("Customer is not present with Id : {}", id);
             return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(e.getMessage());
         }

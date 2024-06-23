@@ -3,7 +3,7 @@ package com.rest.services;
 import com.rest.Entity.CustomerEntity;
 import com.rest.ExceptionHandling.CustomerExceptions.CustomerNotFoundException;
 import com.rest.ExceptionHandling.CustomerExceptions.InvalidAgeCustomerException;
-import com.rest.ExceptionHandling.CustomerExceptions.UserNameAlreadyException;
+import com.rest.ExceptionHandling.CustomerExceptions.UserNameAlreadyExistException;
 import com.rest.Repository.BookingRepository;
 import com.rest.Repository.CustomerRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +36,7 @@ public class CustomerService {
     public CustomerEntity createCustomer(CustomerEntity customer) {
         if(customerRepository.findByUserName(customer.getUserName()).isPresent()) {
             log.debug("Customer user name : {}" ,customer.getUserName());
-            throw new UserNameAlreadyException("User name already exist");
+            throw new UserNameAlreadyExistException("User name already exist");
         }
         if(!isCustomerAbove18(customer)) {
             log.debug("Age is under 18");
@@ -68,7 +68,7 @@ public class CustomerService {
         }
         if(customerRepository.existsByUserName(customer.getUserName())) {
             log.debug("Already present : {}",customer);
-            throw new UserNameAlreadyException("User name trying to update already exists");
+            throw new UserNameAlreadyExistException("User name trying to update already exists");
         }
         if(!isCustomerAbove18(customer)) {
             log.debug("Age tryin to update is under 18");

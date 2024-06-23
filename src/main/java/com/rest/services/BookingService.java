@@ -5,6 +5,8 @@ import com.rest.Entity.BookingPatchDTO;
 import com.rest.Entity.CustomerEntity;
 import com.rest.Entity.RoomEntity;
 import com.rest.ExceptionHandling.BookingExceptions.*;
+import com.rest.ExceptionHandling.CustomerExceptions.CustomerNotFoundException;
+import com.rest.ExceptionHandling.RoomExceptions.RoomNotFoundException;
 import com.rest.Repository.BookingRepository;
 import com.rest.Repository.CustomerRepository;
 import com.rest.Repository.RoomRepository;
@@ -35,15 +37,15 @@ public class BookingService {
         Optional<RoomEntity> room = roomRepository.findById(roomNumber);
          log.info("Room Details {}", room);
          if (customer.isEmpty()) {
-             throw new CustomerNotPresentException("Customer is not present with the give id : "+customerId);
+             throw new CustomerNotFoundException("Customer is not present with the give id : "+customerId);
          }
          if(room.isEmpty()) {
-             throw new RoomNotPresentException("Room is not present with the given room number : "+roomNumber);
+             throw new RoomNotFoundException("Room is not present with the given room number : "+roomNumber);
          }
          List<BookingEntity> existingBookings = bookingRepository.findOverlapBookings(room.get().getRoomNumber(), bookings.getStayEndDate(),bookings.getStayStartDate());
          if(!existingBookings.isEmpty()) {
              log.debug("Bookings already exist for the given dates : {}" , existingBookings);
-             throw new ExistOverlappingDatesException("The provided dates overlaps the already done booking date for the given room number : "+roomNumber);
+             throw new OverlappingDatesException("The provided dates overlaps the already done booking date for the given room number : "+roomNumber);
          }
          if(bookings.getStayStartDate().isBefore(LocalDate.now()) || bookings.getStayEndDate().isBefore(bookings.getStayStartDate())) {
              log.debug("Invalid Dates are given");

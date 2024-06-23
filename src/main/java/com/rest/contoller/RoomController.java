@@ -3,7 +3,7 @@ package com.rest.contoller;
 
 import com.rest.Entity.RoomEntity;
 import com.rest.ExceptionHandling.RoomExceptions.RoomNotFoundException;
-import com.rest.ExceptionHandling.RoomExceptions.RoomNumberAlreadyException;
+import com.rest.ExceptionHandling.RoomExceptions.RoomNumberAlreadyExistException;
 import com.rest.services.RoomService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class RoomController {
             RoomEntity createdRoom = roomService.createRoom(room);
             return ResponseEntity.status(HttpStatus.CREATED).body(room);
         }
-        catch(RoomNumberAlreadyException e) {
+        catch(RoomNumberAlreadyExistException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

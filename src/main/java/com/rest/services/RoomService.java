@@ -2,13 +2,9 @@ package com.rest.services;
 
 import com.rest.Entity.RoomEntity;
 import com.rest.ExceptionHandling.RoomExceptions.RoomNotFoundException;
-import com.rest.ExceptionHandling.RoomExceptions.RoomNumberAlreadyException;
-import com.rest.Repository.BookingRepository;
+import com.rest.ExceptionHandling.RoomExceptions.RoomNumberAlreadyExistException;
 import com.rest.Repository.RoomRepository;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
@@ -23,7 +19,7 @@ public class RoomService {
     public RoomEntity createRoom(RoomEntity room){
         if(roomRepository.findById(room.getRoomNumber()).isPresent()) {
             log.debug("Room number already present : {}",room.getRoomNumber());
-            throw new RoomNumberAlreadyException("Room number "+room.getRoomNumber()+" is already there");
+            throw new RoomNumberAlreadyExistException("Room number "+room.getRoomNumber()+" is already there");
         }
         roomRepository.save(room);
         log.debug("Room Saved successfully");
