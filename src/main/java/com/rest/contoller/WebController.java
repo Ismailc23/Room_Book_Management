@@ -49,7 +49,12 @@ public class WebController {
             return "LoginPage";
         }
         else {
-            return "HomePage";
+            return "RoomAvailabilty";
         }
+    }
+
+    @GetMapping("/roomAvailability")
+    public String viewRoomAvailabilityPage() {
+        return "RoomAvailabilty";
     }
 }

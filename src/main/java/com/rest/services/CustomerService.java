@@ -34,17 +34,10 @@ public class CustomerService {
     }
 
     public CustomerEntity createCustomer(CustomerEntity customer) {
-        if(customerRepository.findByUserName(customer.getUserName()).isPresent()) {
-            log.debug("Customer user name : {}" ,customer.getUserName());
-            throw new UserNameAlreadyExistException("User name already exist");
-        }
         if(!isCustomerAbove18(customer)) {
             log.debug("Age is under 18");
             throw new InvalidAgeCustomerException("Customer must be above 18 years old");
         }
-        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-        String encryptedpwd = bcrypt.encode(customer.getPassword());
-        customer.setPassword(encryptedpwd);
         customerRepository.save(customer);
         log.debug("Customer is saved Successfully : {}",customer);
         return customer;
@@ -65,10 +58,6 @@ public class CustomerService {
         if (!existCustomer.isPresent()) {
             log.debug("Customer is not present");
             throw new CustomerNotFoundException("Customer is not found with the given Id :"+customer.getCustomerId());
-        }
-        if(customerRepository.existsByUserName(customer.getUserName())) {
-            log.debug("Already present : {}",customer);
-            throw new UserNameAlreadyExistException("User name trying to update already exists");
         }
         if(!isCustomerAbove18(customer)) {
             log.debug("Age tryin to update is under 18");
