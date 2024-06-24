@@ -27,7 +27,7 @@ public class CustomerService {
 
     public boolean isCustomerAbove18(CustomerEntity customer) {
         LocalDate current = LocalDate.now();
-        LocalDate dateOfBirth = customer.getDateOfBirth().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate dateOfBirth = customer.getDateOfBirth();
         int age = Period.between(dateOfBirth, current).getYears();
         log.info("Age of the customer : {}", age );
         return age > 18;

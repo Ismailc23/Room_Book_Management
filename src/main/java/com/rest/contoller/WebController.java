@@ -1,5 +1,6 @@
 package com.rest.contoller;
 
+import com.rest.Entity.CustomerEntity;
 import com.rest.Entity.UserEntity;
 import com.rest.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class WebController {
             return "SignUpPage";
         }
         userRepository.save(user);
-        return "LoginPage";
+        return "redirect:/login";
     }
 
     @PostMapping("/loginMethod")
@@ -49,12 +50,10 @@ public class WebController {
             return "LoginPage";
         }
         else {
-            return "RoomAvailabilty";
+            model.addAttribute("customer", new CustomerEntity());
+            return "redirect:/customers";
         }
     }
 
-    @GetMapping("/roomAvailability")
-    public String viewRoomAvailabilityPage() {
-        return "RoomAvailabilty";
-    }
+
 }

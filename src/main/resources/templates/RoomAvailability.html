@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,8 +9,8 @@
 </head>
 <body>
 <div class="container">
-    <h1>Room Booking</h1>
-    <form id="bookingForm">
+    <h1>Checking Availability</h1>
+    <form>
         <div class="form-group">
             <label for="stayStartDate">Stay Start Date:</label>
             <input type="date" id="stayStartDate" name="stayStartDate" required>
@@ -19,8 +19,7 @@
             <label for="stayEndDate">Stay End Date:</label>
             <input type="date" id="stayEndDate" name="stayEndDate" required>
         </div>
-        <button type="button" onclick="checkAvailability()">Check Availability</button>
-        <div id="message"></div>
+        <button type="button">Check Availability</button>
     </form>
 </div>
 </body>

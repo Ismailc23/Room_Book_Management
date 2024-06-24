@@ -30,10 +30,6 @@ public class CustomerController {
         catch (InvalidAgeCustomerException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        catch (UserNameAlreadyExistException e) {
-            log.error("Username already exist");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
     }
 
     @GetMapping("/request/api/customer/{id}")
