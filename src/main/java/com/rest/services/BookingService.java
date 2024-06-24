@@ -4,22 +4,23 @@ import com.rest.Entity.BookingEntity;
 import com.rest.Entity.BookingPatchDTO;
 import com.rest.Entity.CustomerEntity;
 import com.rest.Entity.RoomEntity;
+import com.rest.ExceptionHandling.BookingExceptions.*;
+import com.rest.ExceptionHandling.CustomerExceptions.CustomerNotFoundException;
+import com.rest.ExceptionHandling.RoomExceptions.RoomNotFoundException;
 import com.rest.Repository.BookingRepository;
 import com.rest.Repository.CustomerRepository;
 import com.rest.Repository.RoomRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 @Service
 public class BookingService {
-
-    private static final Logger logger = LoggerFactory.getLogger(BookingService.class);
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -30,48 +31,64 @@ public class BookingService {
     @Autowired
     private BookingRepository bookingRepository;
 
-
-     public BookingEntity createBookings (Long customerId, Long roomNumber, BookingEntity bookings){
+     public BookingEntity createBookings (Long customerId, Long roomNumber, BookingEntity bookings) {
         Optional<CustomerEntity> customer = customerRepository.findById(customerId);
-        logger.info("CustomerDetails {}", customer);
+        log.info("CustomerDetails {}", customer);
         Optional<RoomEntity> room = roomRepository.findById(roomNumber);
-         logger.info("Room Details {}", room);
-        if (!customer.isPresent() || !room.isPresent() || !room.get().isAvailable()) {
-            return null;
-        } else {
-            bookings.setCustomer(customer.get());
-            bookings.setRoom(room.get());
-            bookings.setCustomerFirstName(customer.get().getFirstName());
-            bookings.setCustomerLastName(customer.get().getLastName());
-            bookings.setRoomType(room.get().getType());
-            bookings.setRoomPrice(room.get().getPrice());
-            bookingRepository.save(bookings);
-            Date currentDate = new Date();
-            if (currentDate.after(bookings.getStayStartDate()) && currentDate.before(bookings.getStayEndDate())) {
-                room.get().setAvailable(false);
-            } else {
-                room.get().setAvailable(true);
-            }
-            roomRepository.save(room.get());
-            return bookings;
-        }
-    }
+         log.info("Room Details {}", room);
+         if (customer.isEmpty()) {
+             throw new CustomerNotFoundException("Customer is not present with the give id : "+customerId);
+         }
+         if(room.isEmpty()) {
+             throw new RoomNotFoundException("Room is not present with the given room number : "+roomNumber);
+         }
+         List<BookingEntity> existingBookings = bookingRepository.findOverlapBookings(room.get().getRoomNumber(), bookings.getStayEndDate(),bookings.getStayStartDate());
+         if(!existingBookings.isEmpty()) {
+             log.debug("Bookings already exist for the given dates : {}" , existingBookings);
+             throw new OverlappingDatesException("The provided dates overlaps the already done booking date for the given room number : "+roomNumber);
+         }
+         if(bookings.getStayStartDate().isBefore(LocalDate.now()) || bookings.getStayEndDate().isBefore(bookings.getStayStartDate())) {
+             log.debug("Invalid Dates are given");
+             throw new InvalidDateException("The date provided is invalid");
+         }
+         long daysBetween = ChronoUnit.DAYS.between(bookings.getStayStartDate(), bookings.getStayEndDate());
 
+         if (daysBetween > 30) {
+             throw new InvalidDateException("Maximum stay duration is 30 days.");
+         }
+         bookings.setCustomer(customer.get());
+         bookings.setRoom(room.get());
+         bookings.setCustomerFirstName(customer.get().getFirstName());
+         bookings.setCustomerLastName(customer.get().getLastName());
+         bookings.setRoomType(room.get().getType());
+         bookings.setRoomPrice(room.get().getPrice());
+         bookingRepository.save(bookings);
+         log.debug("Bookings is made successfully : {}",bookings);
+         return bookings;
+    }
 
     public Optional<BookingEntity> getBookingsByReferenceId(Long referenceId) {
-        return bookingRepository.findById(referenceId);
+        Optional<BookingEntity> getBooking = bookingRepository.findById(referenceId);
+        if(!getBooking.isPresent()) {
+            throw new BookingNotFoundException("Booking with the reference ID : "+referenceId+" is not present");
+        }
+        return getBooking;
     }
+
     public Optional<BookingEntity> getBookingsByCustomerIdAndRoomNumber(Long customerId, Long roomNumber) {
-        return bookingRepository.findByCustomer_CustomerIdAndRoom_RoomNumber(customerId,roomNumber);
+        Optional<BookingEntity> getBooking =bookingRepository.findByCustomerIdAndRoomNumber(customerId,roomNumber);
+        if(!getBooking.isPresent()) {
+            throw new BookingNotFoundException("Booking is not present with the provided customer id "+customerId+" and room number "+roomNumber);
+        }
+        return getBooking;
     }
 
     public BookingEntity patchBooking(Long id, BookingPatchDTO bookingPatchDTO) {
-            Optional<BookingEntity> optionalBooking = bookingRepository.findById(id);
-
-            if (optionalBooking.isPresent()) {
-                BookingEntity booking = optionalBooking.get();
-
+            Optional<BookingEntity> patchBooking = bookingRepository.findById(id);
+            BookingEntity booking = patchBooking.get();
+            if (patchBooking.isPresent()) {
                 if (bookingPatchDTO.getBookedDate() != null) {
+                    booking.setBookedDate(bookingPatchDTO.getBookedDate());
                 }
                 if (bookingPatchDTO.getStayStartDate() != null) {
                     booking.setStayStartDate(bookingPatchDTO.getStayStartDate());
@@ -79,17 +96,11 @@ public class BookingService {
                 if (bookingPatchDTO.getStayEndDate() != null) {
                     booking.setStayEndDate(bookingPatchDTO.getStayEndDate());
                 }
-                Date currentDate = new Date();
-                Optional<RoomEntity> room = roomRepository.findById(optionalBooking.get().getRoom().getRoomNumber());
-                if (currentDate.after(bookingPatchDTO.getStayStartDate()) && currentDate.before(bookingPatchDTO.getStayEndDate())) {
-                    room.get().setAvailable(false);
-                } else {
-                    room.get().setAvailable(true);
-                }
+                log.info("Patch Booked Date : {}",bookingPatchDTO.getBookedDate());
+                log.info("Patch Start Date : {}",bookingPatchDTO.getStayStartDate());
+                log.info("Patch End Date : {}",bookingPatchDTO.getStayEndDate());
                 return bookingRepository.save(booking);
-            } else {
-                return null;
             }
+            return null;
     }
-
 }
