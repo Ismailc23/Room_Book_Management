@@ -8,6 +8,7 @@ public class CheckingAvailabilityUI {
 
     @GetMapping("/roomAvailability")
     public String viewRoomAvailabilityPage() {
+
         return "RoomAvailability";
     }
 }
