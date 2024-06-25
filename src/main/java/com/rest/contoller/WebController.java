@@ -51,7 +51,7 @@ public class WebController {
         }
         else {
             model.addAttribute("customer", new CustomerEntity());
-            return "redirect:/customers";
+            return "redirect:/customerform";
         }
     }
 

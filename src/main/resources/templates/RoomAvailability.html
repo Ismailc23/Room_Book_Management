@@ -11,16 +11,16 @@
 <body>
 <div class="container">
     <h1>Checking Availability</h1>
-    <form id="bookingForm">
+    <form id="bookingForm" th:action="@{/roomAvailability}" th:object="${booking}" method="post">
         <div class="form-group">
             <label for="stayStartDate">Stay Start Date:</label>
-            <input type="date" id="stayStartDate" name="stayStartDate" required>
+            <input type="date" id="stayStartDate" th:field="*{stayStartDate}" required>
         </div>
         <div class="form-group">
             <label for="stayEndDate">Stay End Date:</label>
-            <input type="date" id="stayEndDate" name="stayEndDate" required>
+            <input type="date" id="stayEndDate" th:field="*{stayEndDate}" required>
         </div>
-        <button type="button" onclick="checkAvailability()">Check Availability</button>
+        <button type="submit" class="btn btn-primary btn-block" onclick="dateValidation()">Check Availability</button>
         <div id="error-message" class="alert alert-danger mt-3" style="display: none;"></div>
     </form>
 </div>

@@ -17,4 +17,8 @@ public class RoomEntity {
     private int price;
 
     private String type;
+
+    private String description;
+
+    private String photoUrl;
 }

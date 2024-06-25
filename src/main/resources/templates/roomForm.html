@@ -4,7 +4,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Room Form</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="/css/style2.css">
 </head>
 <body>
 <div class="container mt-5">
@@ -15,7 +14,7 @@
                     <h2>Room Form</h2>
                 </div>
                 <div class="card-body">
-                    <form th:action="@{/rooms}" th:object="${room}" method="post">
+                    <form th:action="@{/roomform}" th:object="${room}" method="post">
                         <div class="form-group">
                             <label for="roomNo">Room Number</label>
                             <input type="number" id="roomNo" class="form-control" placeholder="Room Number" th:field="*{roomNumber}" required>
@@ -27,6 +26,14 @@
                         <div class="form-group">
                             <label for="type">Room Type</label>
                             <input type="text" id="type" class="form-control" placeholder="Room Type" th:field="*{type}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="type">Description</label>
+                            <input type="text" id="description" class="form-control" placeholder="Description" th:field="*{description}" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="type">Room Type</label>
+                            <input type="text" id="photourl" class="form-control" placeholder="Photo URL" th:field="*{photoUrl}" required>
                         </div>
                         <div class="form-group text-center">
                             <button type="submit" class="btn btn-primary btn-block">Submit</button>

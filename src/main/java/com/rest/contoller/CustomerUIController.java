@@ -15,15 +15,18 @@ public class CustomerUIController {
     @Autowired
     private CustomerRepository customerRepository;
 
-    @GetMapping("/customers")
+    @GetMapping("/customerform")
     public String showForm(Model model) {
         model.addAttribute("customer", new CustomerEntity());
         return "customerForm";
     }
 
-    @PostMapping("/customers")
+    @PostMapping("/customeform")
     public String submitForm(CustomerEntity customer) {
+        restTemplate
         customerRepository.save(customer);
         return "redirect:/roomAvailability";
     }
+
+
 }

@@ -1,4 +1,4 @@
-function checkAvailability() {
+function dateValidation() {
     const errorMessageDiv = document.getElementById('error-message');
     errorMessageDiv.style.display = 'none';
     errorMessageDiv.innerText = '';
@@ -9,6 +9,7 @@ function checkAvailability() {
     const startDate = new Date(startDateInput);
     const endDate = new Date(endDateInput);
     const currentDate = new Date();
+
 
     if (!startDateInput || !endDateInput) {
         showError('Both start date and end date are required.');
