@@ -1,8 +1,9 @@
 package com.rest.contoller;
 
-import com.rest.Entity.BookingEntity;
+import com.rest.Entity.RoomEntity;
 import com.rest.Repository.BookingRepository;
 import com.rest.services.BookingService;
+import com.rest.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -20,18 +21,23 @@ import java.util.List;
 public class CheckingAvailabilityUI {
 
     @Autowired
-    private BookingRepository bookingRepository;
+    private RoomService roomService;
 
-    @GetMapping("/roomAvailability")
-    public String viewRoomAvailabilityPage(Model model) {
-        model.addAttribute("booking",new BookingEntity());
+    @GetMapping("/availabilityCheckForm")
+    public String showAvailabilityCheckForm() {
         return "RoomAvailability";
     }
 
-//    @PostMapping("/roomAvailability")
-//    public String roomAvailable(BookingEntity booking)
-//    {
-//        bookingRepository.save(booking);
-//        return "redirect:/user/rooms";
-//    }
+    @PostMapping("/availabilityCheckForm")
+    public String checkRoomAvailability(
+            @RequestParam("stayStartDate") LocalDate stayStartDate,
+            @RequestParam("stayEndDate") LocalDate stayEndDate,
+            Model model) {
+
+            List<RoomEntity> availableRooms = roomService.findAvailableRooms(stayStartDate, stayEndDate);
+            model.addAttribute("stayStartDate", stayStartDate);
+            model.addAttribute("stayEndDate", stayEndDate);
+            model.addAttribute("availableRooms", availableRooms);
+        return "availableRooms";
+    }
 }

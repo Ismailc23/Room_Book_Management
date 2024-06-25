@@ -10,11 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 @Controller
-public class WebController {
+public class WebSignUpLogInController {
 
     @Autowired
     private UserRepository userRepository;
@@ -51,9 +50,7 @@ public class WebController {
         }
         else {
             model.addAttribute("customer", new CustomerEntity());
-            return "redirect:/customerform";
+            return "redirect:/customerCreation";
         }
     }
-
-
 }

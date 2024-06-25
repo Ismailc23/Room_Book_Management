@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +27,10 @@ public class RoomService {
         roomRepository.save(room);
         log.debug("Room Saved successfully");
         return room;
+    }
+
+    public List<RoomEntity> findAvailableRooms(LocalDate stayStartDate, LocalDate stayEndDate) {
+        return roomRepository.findAvailableRooms(stayStartDate, stayEndDate);
     }
 
     public Optional<RoomEntity> getRoomById(Long id) {
