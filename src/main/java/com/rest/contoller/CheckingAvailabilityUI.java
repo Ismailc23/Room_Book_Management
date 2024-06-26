@@ -33,7 +33,6 @@ public class CheckingAvailabilityUI {
             @RequestParam("stayStartDate") LocalDate stayStartDate,
             @RequestParam("stayEndDate") LocalDate stayEndDate,
             Model model) {
-
             List<RoomEntity> availableRooms = roomService.findAvailableRooms(stayStartDate, stayEndDate);
             model.addAttribute("stayStartDate", stayStartDate);
             model.addAttribute("stayEndDate", stayEndDate);

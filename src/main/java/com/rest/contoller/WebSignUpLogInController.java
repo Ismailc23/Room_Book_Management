@@ -4,6 +4,7 @@ import com.rest.Entity.CustomerEntity;
 import com.rest.Entity.UserEntity;
 import com.rest.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ public class WebSignUpLogInController {
     @GetMapping("/login")
     public String viewLoginPage()
     {
+
         return "LoginPage";
     }
 
@@ -37,14 +39,18 @@ public class WebSignUpLogInController {
             model.addAttribute("user", user);
             return "SignUpPage";
         }
+        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+        String encryptedpwd = bcrypt.encode(user.getPassword());
+        user.setPassword(encryptedpwd);
         userRepository.save(user);
         return "redirect:/login";
     }
 
     @PostMapping("/loginMethod")
-    public String loginMethod(@RequestParam("username") String username, @RequestParam("password") String password, Model model){
+    public String loginMethod(String username, String password, Model model){
         Optional<UserEntity> user = userRepository.findByUserName(username);
-        if (user.isEmpty() || !user.get().getPassword().equals(password)) {
+        BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+        if (user.isEmpty() || !bcrypt.matches(password,user.get().getPassword())){
             model.addAttribute("errorMessage", "Invalid username or password");
             return "LoginPage";
         }
