@@ -1,7 +1,10 @@
 package com.rest.contoller;
 
 import com.rest.Entity.CustomerEntity;
+import com.rest.Entity.RoomEntity;
 import com.rest.Entity.UserEntity;
+import com.rest.services.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,10 +15,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
 public class WebCustomerController {
+
+
+    @Autowired
+    private CustomerService customerService;
 
     @GetMapping("/customerCreation")
     public String showCustomerForm(Model model)
@@ -36,5 +44,10 @@ public class WebCustomerController {
         return "redirect:/availabilityCheckForm";
     }
 
-
+    @GetMapping("/customerlist")
+    public String showAllCustomers(Model model) {
+        List<CustomerEntity> customers = customerService.getAllCustomers();
+        model.addAttribute("customers", customers);
+        return "CustomersList";
+    }
 }

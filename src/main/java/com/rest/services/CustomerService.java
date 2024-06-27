@@ -1,6 +1,7 @@
 package com.rest.services;
 
 import com.rest.Entity.CustomerEntity;
+import com.rest.Entity.RoomEntity;
 import com.rest.ExceptionHandling.CustomerExceptions.CustomerNotFoundException;
 import com.rest.ExceptionHandling.CustomerExceptions.InvalidAgeException;
 import com.rest.Repository.BookingRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Period;
 ;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -49,6 +51,10 @@ public class CustomerService {
         else {
             return customer;
         }
+    }
+
+    public List<CustomerEntity> getAllCustomers() {
+        return customerRepository.findAll();
     }
 
     public CustomerEntity updateCustomer(CustomerEntity customer) {
