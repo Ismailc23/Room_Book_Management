@@ -1,9 +1,28 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:color="http://www.w3.org/1999/xhtml">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Customer Form</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" crossorigin="anonymous">
+  <style>
+    body {
+        background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20201026/pngtree-scene-with-geometrical-forms-the-poster-model-minimal-background-render-image_437743.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100vh;
+    }
+    .card {
+        background: rgba(0, 0, 0, 0.8);
+        padding: 20px;
+        border-radius: 15px;
+        width: 500px;
+        box-shadow: 0px 0px 10px 0px #000;
+    }
+    h2,label {
+        color:white;
+    }
+  </style>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
         const form = document.querySelector("form");
@@ -28,7 +47,7 @@
   <div class="row justify-content-center">
     <div class="col-md-6">
       <div class="card">
-        <div class="card-header text-center">
+        <div class="card-header justify-content: center">
           <h2>Customer Form</h2>
         </div>
         <div class="card-body">

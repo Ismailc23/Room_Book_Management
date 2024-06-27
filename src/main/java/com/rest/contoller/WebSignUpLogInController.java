@@ -56,7 +56,7 @@ public class WebSignUpLogInController {
         }
         else {
             model.addAttribute("customer", new CustomerEntity());
-            return "redirect:/customerCreation";
+            return "redirect:/customerForm";
         }
     }
 }

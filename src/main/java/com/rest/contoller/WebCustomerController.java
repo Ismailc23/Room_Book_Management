@@ -25,7 +25,7 @@ public class WebCustomerController {
     @Autowired
     private CustomerService customerService;
 
-    @GetMapping("/customerCreation")
+    @GetMapping("/customerForm")
     public String showCustomerForm(Model model)
     {
         model.addAttribute("customer",new CustomerEntity());
