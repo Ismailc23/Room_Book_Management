@@ -33,22 +33,10 @@ public class WebRoomController {
     }
 
     @PostMapping("/roomCreation")
-    public String submitRoomForm(@ModelAttribute RoomEntity room, Model model) {
+    public String submitRoomForm(@ModelAttribute RoomEntity room) {
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<RoomEntity> response = restTemplate.postForEntity("http://localhost:8080/request/api/room", room, RoomEntity.class);
-        if (response.getStatusCode() == HttpStatus.CREATED) {
-            model.addAttribute("message", "Room created successfully!");
-        } else {
-            model.addAttribute("message", "Failed to create room: " + response.getBody());
-        }
-        return "redirect:/availabilityCheckForm";
-    }
-
-    @GetMapping("/rooms")
-    public String showRoomsUser(Model model) {
-        List<RoomEntity> rooms = roomService.getAllRooms();
-        model.addAttribute("rooms", rooms);
-        return "rooms";
+        restTemplate.postForEntity("http://localhost:8080/request/api/room", room, RoomEntity.class);
+        return "redirect:/roomCreation";
     }
 
     @GetMapping("/roomlist")
