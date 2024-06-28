@@ -12,6 +12,11 @@ function dateValidation() {
         alert("Both start date and end date are required.");
     }
 
+    if (startDate < currentDate.setHours(0, 0, 0, 0)) {
+        event.preventDefault();
+        alert("Stay start date cannot be in the past.");
+    }
+
     if (endDate < startDate) {
         event.preventDefault();
         alert("End date should not be before Start Date");
