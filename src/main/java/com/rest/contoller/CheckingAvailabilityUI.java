@@ -37,6 +37,11 @@ public class CheckingAvailabilityUI {
             model.addAttribute("stayStartDate", stayStartDate);
             model.addAttribute("stayEndDate", stayEndDate);
             model.addAttribute("availableRooms", availableRooms);
+        return "redirect:/availableRooms";
+    }
+
+    @GetMapping("/availableRooms")
+    public String availableRooms() {
         return "availableRooms";
     }
 }
