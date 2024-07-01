@@ -6,7 +6,6 @@ function dateValidation() {
     const endDate = new Date(endDateInput);
     const currentDate = new Date();
 
-
     if (!startDateInput || !endDateInput) {
         event.preventDefault();
         alert("Both start date and end date are required.");

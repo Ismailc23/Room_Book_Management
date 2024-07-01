@@ -9,8 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collections;
 import java.util.Optional;
 
 @Controller
@@ -20,9 +20,7 @@ public class WebSignUpLogInController {
     private UserRepository userRepository;
 
     @GetMapping("/login")
-    public String viewLoginPage()
-    {
-
+    public String viewLoginPage() {
         return "LoginPage";
     }
 
@@ -50,7 +48,7 @@ public class WebSignUpLogInController {
     public String loginMethod(String username, String password, Model model){
         Optional<UserEntity> user = userRepository.findByUserName(username);
         BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-        if (user.isEmpty() || !bcrypt.matches(password,user.get().getPassword())){
+        if (user.isEmpty() || !bcrypt.matches(password,user.get().getPassword())) {
             model.addAttribute("errorMessage", "Invalid username or password");
             return "LoginPage";
         }

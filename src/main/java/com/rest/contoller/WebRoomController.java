@@ -1,5 +1,6 @@
 package com.rest.contoller;
 
+import com.rest.Entity.CustomerEntity;
 import com.rest.Entity.RoomEntity;
 import com.rest.Repository.RoomRepository;
 import com.rest.services.RoomService;
@@ -8,10 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -25,9 +23,10 @@ public class WebRoomController {
     @Autowired
     private RoomService roomService;
 
+    RestTemplate restTemplate = new RestTemplate();
+
     @GetMapping("/roomCreation")
-    public String showRoomForm(Model model)
-    {
+    public String showRoomForm(Model model) {
         model.addAttribute("room", new RoomEntity());
         return "roomForm";
     }
@@ -46,4 +45,45 @@ public class WebRoomController {
         return "RoomListAdmin";
     }
 
+    @GetMapping("/updateRoomForm")
+    public String showRoomUpdateForm(@RequestParam("roomNumber") Long roomNumber, Model model) {
+        String url = "http://localhost:8080/request/api/room/" + roomNumber;
+        RoomEntity room = restTemplate.getForObject(url, RoomEntity.class);
+        model.addAttribute("room", room);
+        return "updateRoom";
+    }
+
+    @PostMapping("/updateRoom")
+    public String updateRoom(RoomEntity room, Model model) {
+        String url = "http://localhost:8080/request/api/" + room.getRoomNumber();
+        try {
+            restTemplate.put(url, room);
+            model.addAttribute("message", "Room updated successfully!");
+        }
+        catch (Exception e) {
+            model.addAttribute("error", "Error updating room: " + e.getMessage());
+        }
+        return "redirect:/roomlist";
+    }
+
+    @GetMapping("/deleteRoomForm")
+    public String deleteRoom(@RequestParam("roomNumber") Long roomNumber, Model model) {
+        String url = "http://localhost:8080/request/api/room/" + roomNumber;
+        RoomEntity room = restTemplate.getForObject(url, RoomEntity.class);
+        model.addAttribute("room", room);
+        return "DeleteRoom";
+    }
+
+    @PostMapping("/deleteRoom")
+    public String deleteRoom(RoomEntity room, Model model) {
+        String url = "http://localhost:8080/request/" + room.getRoomNumber();
+        try {
+            restTemplate.delete(url);
+            model.addAttribute("message", "Room deleted successfully!");
+        }
+        catch (Exception e) {
+            model.addAttribute("error", "Error deleting room: " + e.getMessage());
+        }
+        return "redirect:/roomCreation";
+    }
 }

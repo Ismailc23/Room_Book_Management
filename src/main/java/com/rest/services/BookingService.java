@@ -42,7 +42,7 @@ public class BookingService {
          if(room.isEmpty()) {
              throw new RoomNotFoundException("Room is not present with the given room number : "+roomNumber);
          }
-         List<BookingEntity> existingBookings = bookingRepository.findOverlapBookings(room.get().getRoomNumber(), bookings.getStayEndDate(),bookings.getStayStartDate());
+         List<BookingEntity> existingBookings = bookingRepository.findOverlappingBookings(room.get().getRoomNumber(), bookings.getStayEndDate(),bookings.getStayStartDate());
          if(!existingBookings.isEmpty()) {
              log.debug("Bookings already exist for the given dates : {}" , existingBookings);
              throw new OverlappingDatesException("The provided dates overlaps the already done booking date for the given room number : "+roomNumber);

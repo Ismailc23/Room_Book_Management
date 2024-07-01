@@ -1,6 +1,7 @@
 package com.rest.contoller;
 
 import com.rest.Entity.CustomerEntity;
+import com.rest.Entity.RoomEntity;
 import com.rest.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -16,15 +17,13 @@ import java.util.Optional;
 @Controller
 public class WebCustomerController {
 
-
     @Autowired
     private CustomerService customerService;
 
     RestTemplate restTemplate = new RestTemplate();
 
     @GetMapping("/customerForm")
-    public String showCustomerForm(Model model)
-    {
+    public String showCustomerForm(Model model) {
         model.addAttribute("customer",new CustomerEntity());
         return "customerForm";
     }
@@ -44,7 +43,7 @@ public class WebCustomerController {
     }
 
     @GetMapping("/customerDetails/{id}")
-    public String getCustomerDetails(@PathVariable Long id,Model model){
+    public String getCustomerDetails(@PathVariable Long id,Model model) {
         CustomerEntity customer = restTemplate.getForObject("http://localhost:8080/request/api/customer/"+id, CustomerEntity.class);
         model.addAttribute("customer",customer);
         return "customerDetails";
@@ -64,7 +63,8 @@ public class WebCustomerController {
         try {
             restTemplate.put(url, customer);
             model.addAttribute("message", "Customer updated successfully!");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             model.addAttribute("error", "Error updating customer: " + e.getMessage());
         }
         return "redirect:/customerDetails/"+customer.getCustomerId();
@@ -84,7 +84,8 @@ public class WebCustomerController {
         try {
             restTemplate.delete(url);
             model.addAttribute("message", "Customer deleted successfully!");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             model.addAttribute("error", "Error deleting customer: " + e.getMessage());
         }
         return "redirect:/customerForm";

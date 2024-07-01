@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Deleting a Room</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+<form th:action="@{/deleteRoom}" method="post" th:object="${room}" class="d-inline">
+    <div class="row justify-content-center">
+        <h2>Sure to Delete ?</h2>
+        <div class="form-group">
+            <input type="hidden" class="form-control" id="roomNumber" th:field="*{roomNumber}" readonly>
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
+    </div>
+</form>
+</body>
+</html>
