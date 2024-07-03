@@ -1,12 +1,12 @@
 package com.rest.Repository;
 
-import com.rest.Entity.CustomerEntity;
-import com.rest.Entity.UserEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.rest.Entity.User;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<UserEntity,Long> {
-    boolean existsByUserName(String username);
-    Optional<UserEntity> findByUserName(String userName);
+@Repository
+public interface UserRepository extends CrudRepository<User, Integer> {
+    Optional<User> findByEmail(String email);
 }

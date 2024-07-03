@@ -68,6 +68,7 @@
               <label>Email</label>
               <input type="email" id="email" class="form-control" th:field="*{email}" required>
             </div>
+            <input type="hidden" name="jwtToken" th:value="${jwtToken}"/>
             <div class="form-group text-center">
               <button type="submit" class="btn btn-primary btn-block">Submit</button>
             </div>
