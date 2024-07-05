@@ -3,19 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <title>Booking Confirmation</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+          background: linear-gradient(to right, #3a1c71, #d76d77, #ffaf7b);
+         }
+         .container {
+             max-width: 600px;
+             margin: 50px auto;
+             padding: 20px;
+             background-color: #ffffff;
+             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+             border-radius: 5px;
+         }
+         h1 {
+             text-align: center;
+             margin-bottom: 30px;
+         }
+         .btn-primary {
+             margin-top: 20px;
+         }
+    </style>
 </head>
 <body>
 <div class="container">
     <h1>Booking Confirmation</h1>
-    <p>Thank you for your booking!</p>
-    <p><strong>Reference ID:</strong> <span th:text="${booking.referenceId}"></span></p>
-    <p><strong>Customer Name:</strong> <span th:text="${booking.customerFirstName} + ' ' + ${booking.customerLastName}"></span></p>
-    <p><strong>Room Type:</strong> <span th:text="${booking.roomType}"></span></p>
-    <p><strong>Room Price:</strong> <span th:text="${booking.roomPrice}"></span></p>
-    <p><strong>Stay Start Date:</strong> <span th:text="${booking.stayStartDate}"></span></p>
-    <p><strong>Stay End Date:</strong> <span th:text="${booking.stayEndDate}"></span></p>
-    <a href="/availabilityCheckForm" class="btn btn-primary">Book Another Room</a>
+    <div class="card">
+        <div class="card-body">
+            <p class="card-text"><strong>Reference ID:</strong> <span th:text="${booking.referenceId}"></span></p>
+            <p class="card-text"><strong>Customer Name:</strong> <span th:text="${booking.customerFirstName} + ' ' + ${booking.customerLastName}"></span></p>
+            <p class="card-text"><strong>Room Type:</strong> <span th:text="${booking.roomType}"></span></p>
+            <p class="card-text"><strong>Room Price:</strong> <span th:text="${booking.roomPrice}"></span></p>
+            <p class="card-text"><strong>Stay Start Date:</strong> <span th:text="${booking.stayStartDate}"></span></p>
+            <p class="card-text"><strong>Stay End Date:</strong> <span th:text="${booking.stayEndDate}"></span></p>
+        </div>
+    </div>
+    <a href="/availabilityCheckForm" class="btn btn-primary btn-block mt-3">Book Another Room</a>
 </div>
 </body>
 </html>
