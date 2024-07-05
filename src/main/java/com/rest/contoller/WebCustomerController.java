@@ -3,6 +3,7 @@ package com.rest.contoller;
 import com.rest.Entity.CustomerEntity;
 import com.rest.Entity.RoomEntity;
 import com.rest.services.CustomerService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
@@ -23,16 +24,27 @@ public class WebCustomerController {
     RestTemplate restTemplate = new RestTemplate();
 
     @GetMapping("/customerForm")
-    public String showCustomerForm(Model model) {
-        model.addAttribute("customer",new CustomerEntity());
+    public String showCustomerForm(Model model, HttpSession session) {
+        String token = (String) session.getAttribute("token");
+        System.out.println("token in customerForm : "+token);
+        if (token == null) {
+            return "redirect:/app/auth/login";
+        }
+        model.addAttribute("customer", new CustomerEntity());
+
         return "customerForm";
     }
-
     @PostMapping("/customerCreation")
-    public String submitCustomerForm(CustomerEntity customer,Model model) {
+    public String submitCustomerForm(CustomerEntity customer, Model model, HttpSession session) {
         ResponseEntity<CustomerEntity> response = restTemplate.postForEntity("http://localhost:8080/request/api/customer", customer, CustomerEntity.class);
-        CustomerEntity createdCustomer = response.getBody();
-        return "redirect:/customerDetails/"+createdCustomer.getCustomerId();
+        if (response.getStatusCode() == HttpStatus.CREATED) {
+            CustomerEntity createdCustomer = response.getBody();
+            session.setAttribute("Id",createdCustomer.getCustomerId());
+            return "redirect:/customerDetails/" + createdCustomer.getCustomerId();
+        } else {
+            model.addAttribute("error", "Customer creation failed");
+            return "customerForm";
+        }
     }
 
     @GetMapping("/customerlist")

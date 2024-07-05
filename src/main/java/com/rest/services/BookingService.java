@@ -62,8 +62,9 @@ public class BookingService {
          bookings.setCustomerLastName(customer.get().getLastName());
          bookings.setRoomType(room.get().getType());
          bookings.setRoomPrice(room.get().getPrice());
+         bookings.setBookedDate(LocalDate.now());
          bookingRepository.save(bookings);
-         log.debug("Bookings is made successfully : {}",bookings);
+         log.debug("Booking is made successfully : {}",bookings);
          return bookings;
     }
 

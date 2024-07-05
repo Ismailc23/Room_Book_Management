@@ -13,8 +13,7 @@
                 <h3>Log In</h3>
             </div>
             <div class="card-body">
-                <form th:action="@{/api/auth/loginMethod}" method="post">
-                    <input type="hidden" name="jwtToken" th:value="${jwtToken}"/>
+                <form th:action="@{/app/auth/login}" method="post">
                     <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
                         <span th:text="${errorMessage}"></span>
                     </div>
@@ -31,7 +30,7 @@
             </div>
             <div class="card-footer">
                 <div class="d-flex justify-content-center links">
-                    Don't have an account?<a href="/api/auth/signUp">Sign Up</a>
+                    Don't have an account?<a href="/app/auth/signup">Sign Up</a>
                 </div>
             </div>
         </div>

@@ -34,7 +34,12 @@
                     <h5 class="card-title" th:text="${room.type}"></h5>
                     <p class="card-text" th:text="${room.description}"></p>
                     <p class="card-text"><strong>Price: </strong><span th:text="${room.price}"></span></p>
-                    <a href="#" class="btn btn-primary">Book It</a>
+                    <form th:action="@{/makeBooking}" method="post">
+                        <input type="hidden" name="roomNumber" th:value="${room.roomNumber}" />
+                        <input type="hidden" name="stayStartDate" th:value="${stayStartDate}" />
+                        <input type="hidden" name="stayEndDate" th:value="${stayEndDate}" />
+                        <button type="submit" class="btn btn-primary">Book It</button>
+                    </form>
                 </div>
             </div>
         </div>

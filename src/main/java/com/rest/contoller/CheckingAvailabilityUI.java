@@ -4,6 +4,7 @@ import com.rest.Entity.RoomEntity;
 import com.rest.Repository.BookingRepository;
 import com.rest.services.BookingService;
 import com.rest.services.RoomService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +25,11 @@ public class CheckingAvailabilityUI {
     private RoomService roomService;
 
     @GetMapping("/availabilityCheckForm")
-    public String showAvailabilityCheckForm() {
+    public String showAvailabilityCheckForm(HttpSession session) {
         return "RoomAvailability";
     }
 
-    @PostMapping("/availabilityCheckForm")
+    @PostMapping("/availableRooms")
     public String checkRoomAvailability(
             @RequestParam("stayStartDate") LocalDate stayStartDate,
             @RequestParam("stayEndDate") LocalDate stayEndDate,

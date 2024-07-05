@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Booking Confirmation</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="container">
+    <h1>Booking Confirmation</h1>
+    <p>Thank you for your booking!</p>
+    <p><strong>Reference ID:</strong> <span th:text="${booking.referenceId}"></span></p>
+    <p><strong>Customer Name:</strong> <span th:text="${booking.customerFirstName} + ' ' + ${booking.customerLastName}"></span></p>
+    <p><strong>Room Type:</strong> <span th:text="${booking.roomType}"></span></p>
+    <p><strong>Room Price:</strong> <span th:text="${booking.roomPrice}"></span></p>
+    <p><strong>Stay Start Date:</strong> <span th:text="${booking.stayStartDate}"></span></p>
+    <p><strong>Stay End Date:</strong> <span th:text="${booking.stayEndDate}"></span></p>
+    <a href="/availabilityCheckForm" class="btn btn-primary">Book Another Room</a>
+</div>
+</body>
+</html>

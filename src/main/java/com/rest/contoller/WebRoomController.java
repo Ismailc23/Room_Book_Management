@@ -1,7 +1,9 @@
 package com.rest.contoller;
 
+import com.rest.Entity.BookingEntity;
 import com.rest.Entity.CustomerEntity;
 import com.rest.Entity.RoomEntity;
+import com.rest.Repository.BookingRepository;
 import com.rest.Repository.RoomRepository;
 import com.rest.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller

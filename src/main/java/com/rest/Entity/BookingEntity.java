@@ -33,8 +33,7 @@ public class BookingEntity {
     @JsonIgnore
     private RoomEntity room;
 
-    @Column(name = "booked_date")
-    private LocalDate bookedDate;
+    private LocalDate bookedDate = LocalDate.now();
 
     private LocalDate stayStartDate;
 

@@ -13,7 +13,7 @@
                 <h3>Sign Up</h3>
             </div>
             <div class="card-body">
-                <form th:action="@{/api/auth/registrationMethod}" method="post" style="max-width: 600px; margin: 0 auto;" th:object="${user}">
+                <form th:action="@{/app/auth/signup}" method="post" style="max-width: 600px; margin: 0 auto;" th:object="${user}">
                     <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
                         <span th:text="${errorMessage}"></span>
                     </div>
@@ -33,7 +33,7 @@
             </div>
             <div class="card-footer">
                 <div class="d-flex justify-content-center links">
-                    Want to Log In? <a href="/api/auth/login">Login</a>
+                    Want to Log In? <a href="/app/auth/login">Login</a>
                 </div>
             </div>
         </div>

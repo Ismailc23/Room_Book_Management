@@ -9,17 +9,16 @@ import com.rest.Response.LoginResponse;
 import com.rest.services.AuthenticationService;
 import com.rest.services.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@RequestMapping("/api/auth")
-@Controller
+
+@RestController
 public class AuthenticationController {
 
     private final JwtService jwtService;
@@ -31,33 +30,23 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @GetMapping("/login")
-    public String viewLoginPage() {
-        return "LoginPage";
-    }
-
-    @GetMapping("/signUp")
-    public String registerForm(Model model) {
-        model.addAttribute("user", new User());
-        return "SignUpPage";
-    }
-
     @PostMapping("/registrationMethod")
-    public String registrationProcess( RegisterUserDto registerUserDto) {
+    public ResponseEntity<User> registrationProcess(@RequestBody RegisterUserDto registerUserDto) {
+        System.out.println("Received RegisterUserDto: " + registerUserDto);
         User registeredUser = authenticationService.signup(registerUserDto);
-        return "redirect:/api/auth/login";
+
+        return ResponseEntity.ok(registeredUser);
     }
 
     @PostMapping("/loginMethod")
-    public String loginMethod(LoginUserDto loginUserDto, Model model) {
+    public ResponseEntity<LoginResponse> loginMethod(@RequestBody LoginUserDto loginUserDto, Model model) {
         User authenticatedUser = authenticationService.authenticate(loginUserDto);
+
         String jwtToken = jwtService.generateToken(authenticatedUser);
+
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setToken(jwtToken);
         loginResponse.setExpiresIn(jwtService.getExpirationTime());
-        return "redirect:/customerForm";
+        return ResponseEntity.ok(loginResponse);
     }
 }
