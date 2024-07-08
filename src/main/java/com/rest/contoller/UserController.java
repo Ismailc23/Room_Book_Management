@@ -23,16 +23,13 @@ public class UserController {
     @GetMapping("/me")
     public ResponseEntity<User> authenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         User currentUser = (User) authentication.getPrincipal();
-
         return ResponseEntity.ok(currentUser);
     }
 
     @GetMapping("/")
     public ResponseEntity<List<User>> allUsers() {
         List <User> users = userService.allUsers();
-
         return ResponseEntity.ok(users);
     }
 }

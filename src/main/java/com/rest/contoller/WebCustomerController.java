@@ -31,9 +31,9 @@ public class WebCustomerController {
             return "redirect:/app/auth/login";
         }
         model.addAttribute("customer", new CustomerEntity());
-
         return "customerForm";
     }
+
     @PostMapping("/customerCreation")
     public String submitCustomerForm(CustomerEntity customer, Model model, HttpSession session) {
         ResponseEntity<CustomerEntity> response = restTemplate.postForEntity("http://localhost:8080/request/api/customer", customer, CustomerEntity.class);
@@ -41,7 +41,8 @@ public class WebCustomerController {
             CustomerEntity createdCustomer = response.getBody();
             session.setAttribute("Id",createdCustomer.getCustomerId());
             return "redirect:/customerDetails/" + createdCustomer.getCustomerId();
-        } else {
+        }
+        else {
             model.addAttribute("error", "Customer creation failed");
             return "customerForm";
         }

@@ -13,9 +13,9 @@
                 <h3>Sign Up</h3>
             </div>
             <div class="card-body">
-                <form th:action="@{/app/auth/signup}" method="post" style="max-width: 600px; margin: 0 auto;" th:object="${user}">
-                    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
-                        <span th:text="${errorMessage}"></span>
+                <form th:action="@{/app/auth/signup}" method="post" style="max-width: 600px; margin: 0 auto;" th:object="${registerUserDto}">
+                    <div th:if="${error}" class="alert alert-danger" role="alert">
+                        <span th:text="${error}"></span>
                     </div>
                     <div class="input-group form-group">
                         <input type="text" class="form-control" placeholder="Full Name" th:field="*{fullName}" required />

@@ -25,34 +25,26 @@ public class FrontEndBookingController {
             HttpSession session,
             Model model) {
         Long customerId = (Long) session.getAttribute("Id");
-        if (customerId == null) {
-            model.addAttribute("error", "Customer not logged in");
-            return "errorPage"; // Return an error page if customer is not logged in
-        }
-
         BookingEntity booking = new BookingEntity();
         booking.setStayStartDate(stayStartDate);
         booking.setStayEndDate(stayEndDate);
-
         String bookingApiUrl = String.format("http://localhost:8080/api/customers/%d/%d", customerId, roomNumber);
-
         RestTemplate restTemplate = new RestTemplate();
         try {
             ResponseEntity<BookingEntity> response = restTemplate.postForEntity(bookingApiUrl, booking, BookingEntity.class);
             if (response.getStatusCode() == HttpStatus.CREATED) {
                 BookingEntity createdBooking = response.getBody();
                 model.addAttribute("booking", createdBooking);
-                return "bookingConfirmation"; // Return the booking confirmation page
-            } else {
-                model.addAttribute("error", "Booking failed");
-                return "errorPage"; // Return an error page if booking failed
+                return "bookingConfirmation";
             }
-        } catch (HttpClientErrorException | HttpServerErrorException e) {
-            model.addAttribute("error", e.getResponseBodyAsString());
-            return "errorPage"; // Return an error page if there was an exception
-        } catch (Exception e) {
+            else {
+                model.addAttribute("error", "Booking failed");
+                return "errorPage";
+            }
+        }
+        catch (Exception e) {
             model.addAttribute("error", "An unexpected error occurred");
-            return "errorPage"; // Return an error page for unexpected errors
+            return "errorPage";
         }
     }
 }
