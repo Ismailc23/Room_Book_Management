@@ -4,36 +4,30 @@ import com.rest.Entity.LoginUserDto;
 import com.rest.Entity.RegisterUserDto;
 import com.rest.Entity.User;
 import com.rest.Repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.web.oauth2.resourceserver.OAuth2ResourceServerSecurityMarker;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthenticationService {
 
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    private final AuthenticationManager authenticationManager;
-
-    public AuthenticationService(
-            UserRepository userRepository,
-            AuthenticationManager authenticationManager,
-            PasswordEncoder passwordEncoder
-    ) {
-        this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     public User signup(RegisterUserDto input) {
         User user = new User();
                 user.setFullName(input.getFullName());
                 user.setEmail(input.getEmail());
                 user.setPassword(passwordEncoder.encode(input.getPassword()));
-
         return userRepository.save(user);
     }
 
@@ -44,7 +38,6 @@ public class AuthenticationService {
                         input.getPassword()
                 )
         );
-
         return userRepository.findByEmail(input.getEmail())
                 .orElseThrow();
     }

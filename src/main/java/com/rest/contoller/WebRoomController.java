@@ -87,6 +87,6 @@ public class WebRoomController {
         catch (Exception e) {
             model.addAttribute("error", "Error deleting room: " + e.getMessage());
         }
-        return "redirect:/roomCreation";
+        return "redirect:/roomlist";
     }
 }

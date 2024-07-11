@@ -3,6 +3,7 @@ package com.rest.contoller;
 import com.rest.Entity.CustomerEntity;
 import com.rest.Entity.RoomEntity;
 import com.rest.services.CustomerService;
+import com.rest.services.JwtService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -21,15 +22,13 @@ public class WebCustomerController {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private JwtService jwtService;
+
     RestTemplate restTemplate = new RestTemplate();
 
     @GetMapping("/customerForm")
     public String showCustomerForm(Model model, HttpSession session) {
-        String token = (String) session.getAttribute("token");
-        System.out.println("token in customerForm : "+token);
-        if (token == null) {
-            return "redirect:/app/auth/login";
-        }
         model.addAttribute("customer", new CustomerEntity());
         return "customerForm";
     }
