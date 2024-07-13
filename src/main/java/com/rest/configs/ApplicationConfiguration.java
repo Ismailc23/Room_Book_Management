@@ -16,7 +16,6 @@ public class ApplicationConfiguration {
     @Autowired
     private UserRepository userRepository;
 
-
     @Bean
     UserDetailsService userDetailsService() {
         return username -> userRepository.findByEmail(username)

@@ -1,5 +1,4 @@
 package com.rest.Entity;
-
 import lombok.Data;
 
 @Data

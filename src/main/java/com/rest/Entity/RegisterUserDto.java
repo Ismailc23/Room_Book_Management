@@ -1,5 +1,4 @@
 package com.rest.Entity;
-
 import lombok.Data;
 
 @Data
@@ -9,6 +8,4 @@ public class RegisterUserDto {
     private String password;
 
     private String fullName;
-
-
 }

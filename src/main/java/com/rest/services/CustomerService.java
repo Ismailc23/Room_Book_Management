@@ -1,7 +1,6 @@
 package com.rest.services;
 
 import com.rest.Entity.CustomerEntity;
-import com.rest.Entity.RoomEntity;
 import com.rest.ExceptionHandling.CustomerExceptions.CustomerNotFoundException;
 import com.rest.ExceptionHandling.CustomerExceptions.InvalidAgeException;
 import com.rest.Repository.BookingRepository;

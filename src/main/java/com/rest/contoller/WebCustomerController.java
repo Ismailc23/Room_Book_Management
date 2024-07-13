@@ -1,7 +1,6 @@
 package com.rest.contoller;
 
 import com.rest.Entity.CustomerEntity;
-import com.rest.Entity.RoomEntity;
 import com.rest.services.CustomerService;
 import com.rest.services.JwtService;
 import jakarta.servlet.http.HttpSession;
@@ -10,11 +9,8 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class WebCustomerController {
@@ -28,9 +24,13 @@ public class WebCustomerController {
     RestTemplate restTemplate = new RestTemplate();
 
     @GetMapping("/customerForm")
-    public String showCustomerForm(Model model, HttpSession session) {
-        model.addAttribute("customer", new CustomerEntity());
-        return "customerForm";
+    public String showCustomerForm(Model model,HttpSession session) {
+        String token = (String) session.getAttribute("token");
+        if(token!=null) {
+            model.addAttribute("customer", new CustomerEntity());
+            return "customerForm";
+        }
+        return "redirect:/app/auth/login";
     }
 
     @PostMapping("/customerCreation")
@@ -49,9 +49,9 @@ public class WebCustomerController {
 
     @GetMapping("/customerlist")
     public String showAllCustomers(Model model) {
-        List<CustomerEntity> customers = customerService.getAllCustomers();
-        model.addAttribute("customers", customers);
-        return "CustomersList";
+            List<CustomerEntity> customers = customerService.getAllCustomers();
+            model.addAttribute("customers", customers);
+            return "CustomersList";
     }
 
     @GetMapping("/customerDetails/{id}")
@@ -62,11 +62,15 @@ public class WebCustomerController {
     }
 
     @GetMapping("/updateCustomerForm")
-    public String showUpdateForm(@RequestParam("id") Long id, Model model) {
-        String url = "http://localhost:8080/request/api/customer/" + id;
-        CustomerEntity customer = restTemplate.getForObject(url, CustomerEntity.class);
-        model.addAttribute("customer", customer);
-        return "updateCustomer";
+    public String showUpdateForm(@RequestParam("id") Long id, Model model,HttpSession session) {
+        String token = (String) session.getAttribute("token");
+        if (token != null) {
+            String url = "http://localhost:8080/request/api/customer/" + id;
+            CustomerEntity customer = restTemplate.getForObject(url, CustomerEntity.class);
+            model.addAttribute("customer", customer);
+            return "updateCustomer";
+        }
+        return "redirect:/app/auth/login";
     }
 
     @PostMapping("/updateCustomer")

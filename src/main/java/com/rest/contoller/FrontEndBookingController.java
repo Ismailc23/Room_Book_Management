@@ -8,8 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
@@ -22,8 +20,7 @@ public class FrontEndBookingController {
             @RequestParam("roomNumber") Long roomNumber,
             @RequestParam("stayStartDate") LocalDate stayStartDate,
             @RequestParam("stayEndDate") LocalDate stayEndDate,
-            HttpSession session,
-            Model model) {
+            HttpSession session, Model model) {
         Long customerId = (Long) session.getAttribute("Id");
         BookingEntity booking = new BookingEntity();
         booking.setStayStartDate(stayStartDate);
