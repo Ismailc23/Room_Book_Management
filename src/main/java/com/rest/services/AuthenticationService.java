@@ -1,8 +1,6 @@
 package com.rest.services;
 
-import com.rest.Entity.LoginUserDto;
-import com.rest.Entity.RegisterUserDto;
-import com.rest.Entity.User;
+import com.rest.Entity.*;
 import com.rest.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;

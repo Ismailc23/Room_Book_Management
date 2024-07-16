@@ -5,12 +5,10 @@ import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-
 import jakarta.servlet.http.*;
 
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
-
     @Autowired
     private JwtService jwtService;
 

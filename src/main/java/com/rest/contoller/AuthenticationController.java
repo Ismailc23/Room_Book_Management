@@ -6,21 +6,21 @@ import com.rest.Entity.User;
 import com.rest.Response.LoginResponse;
 import com.rest.services.AuthenticationService;
 import com.rest.services.JwtService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.stream.Collectors;
+
 @RestController
 public class AuthenticationController {
 
-    private final JwtService jwtService;
+    @Autowired
+    private JwtService jwtService;
 
-    private final AuthenticationService authenticationService;
-
-    public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService) {
-        this.jwtService = jwtService;
-        this.authenticationService = authenticationService;
-    }
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @PostMapping("/registrationMethod")
     public ResponseEntity<User> registrationProcess(@RequestBody RegisterUserDto registerUserDto) {
