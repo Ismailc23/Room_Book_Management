@@ -7,7 +7,7 @@
 <body>
 <div class="container mt-5">
     <h2>Update Room Details</h2>
-    <form th:action="@{/updateRoom}" method="post" th:object="${room}">
+    <form th:action="@{/admin/updateRoom}" method="post" th:object="${room}">
         <div class="form-group">
             <label for="roomNumber">Room Number:</label>
             <input type="text" class="form-control" id="roomNumber" th:field="*{roomNumber}" readonly>

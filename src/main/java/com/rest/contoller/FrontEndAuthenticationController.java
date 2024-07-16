@@ -15,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @Slf4j
 @RequestMapping("/app")
 @Controller
@@ -39,7 +41,7 @@ public class FrontEndAuthenticationController {
     @PostMapping("/auth/signup")
     public String signup(@ModelAttribute RegisterUserDto registerUserDto, Model model) {
         String url = "http://localhost:8080/registrationMethod";
-        try {
+       try {
             ResponseEntity<User> response = restTemplate.postForEntity(url, registerUserDto, User.class);
             if (response.getStatusCode() == HttpStatus.OK) {
                 return "redirect:/app/auth/login";
@@ -47,10 +49,10 @@ public class FrontEndAuthenticationController {
             else {
                 model.addAttribute("error", "Sign up failed");
                 return "SignUpPage";
-            }
-        }
+           }
+       }
         catch (Exception ex) {
-            model.addAttribute("error","User name already exists");
+            model.addAttribute("error",ex.getMessage().toString());
             return "SignUpPage";
         }
     }
@@ -65,7 +67,12 @@ public class FrontEndAuthenticationController {
                 log.debug("Token: " + response.getBody().getToken());
                 log.debug("Expiration : {}",jwtService.extractExpiration(response.getBody().getToken()));
                 session.setAttribute("token", response.getBody().getToken());
-                return "redirect:/customerForm";
+                List<String> roles = response.getBody().getRoles();
+                if (roles.contains("ADMIN")) {
+                    return "redirect:/admin/roomCreation";
+                } else {
+                    return "redirect:/customerForm";
+                }
             }
             else {
                 model.addAttribute("error", "Invalid credentials provided.");
