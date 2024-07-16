@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -41,18 +42,21 @@ public class FrontEndAuthenticationController {
     @PostMapping("/auth/signup")
     public String signup(@ModelAttribute RegisterUserDto registerUserDto, Model model) {
         String url = "http://localhost:8080/registrationMethod";
-       try {
+        try {
             ResponseEntity<User> response = restTemplate.postForEntity(url, registerUserDto, User.class);
             if (response.getStatusCode() == HttpStatus.OK) {
                 return "redirect:/app/auth/login";
-            }
-            else {
-                model.addAttribute("error", "Sign up failed");
+            } else {
+                model.addAttribute("error", "An unexpected error occurred");
                 return "SignUpPage";
-           }
-       }
-        catch (Exception ex) {
-            model.addAttribute("error",ex.getMessage().toString());
+            }
+        }
+        catch (HttpClientErrorException e) {
+            if (e.getStatusCode() == HttpStatus.CONFLICT) {
+                model.addAttribute("error", "Username already exists");
+            } else {
+                model.addAttribute("error", "An unexpected error occurred");
+            }
             return "SignUpPage";
         }
     }
@@ -65,7 +69,7 @@ public class FrontEndAuthenticationController {
             if (response.getStatusCode() == HttpStatus.OK) {
                 log.info("Logged In");
                 log.debug("Token: " + response.getBody().getToken());
-                log.debug("Expiration : {}",jwtService.extractExpiration(response.getBody().getToken()));
+                log.debug("Expiration : {}", jwtService.extractExpiration(response.getBody().getToken()));
                 session.setAttribute("token", response.getBody().getToken());
                 List<String> roles = response.getBody().getRoles();
                 if (roles.contains("ADMIN")) {
@@ -73,14 +77,17 @@ public class FrontEndAuthenticationController {
                 } else {
                     return "redirect:/customerForm";
                 }
-            }
-            else {
+            } else {
                 model.addAttribute("error", "Invalid credentials provided.");
                 return "LoginPage";
             }
         }
-        catch (Exception ex) {
-            model.addAttribute("error", "Invalid credentials provided.");
+        catch (HttpClientErrorException e) {
+            if (e.getStatusCode() == HttpStatus.BAD_REQUEST) {
+                model.addAttribute("error", "Invalid credentials provided.");
+            } else {
+                model.addAttribute("error", "An unexpected error occurred.");
+            }
             return "LoginPage";
         }
     }

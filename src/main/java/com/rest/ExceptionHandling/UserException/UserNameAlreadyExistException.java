@@ -1,4 +1,4 @@
-package com.rest.ExceptionHandling.CustomerExceptions;
+package com.rest.ExceptionHandling.UserException;
 
 public class UserNameAlreadyExistException extends RuntimeException {
     public UserNameAlreadyExistException(String message) {
