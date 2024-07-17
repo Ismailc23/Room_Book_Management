@@ -42,7 +42,7 @@ public class FrontEndAuthenticationController {
     @PostMapping("/auth/signup")
     public String signup(@ModelAttribute RegisterUserDto registerUserDto, Model model) {
         String url = "http://localhost:8080/registrationMethod";
-        try {
+       try {
             ResponseEntity<User> response = restTemplate.postForEntity(url, registerUserDto, User.class);
             if (response.getStatusCode() == HttpStatus.OK) {
                 return "redirect:/app/auth/login";

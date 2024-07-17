@@ -12,8 +12,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.stream.Collectors;
 
+import java.util.stream.Collectors;
+
 @RestController
 public class AuthenticationController {
+    
     @Autowired
     private JwtService jwtService;
 

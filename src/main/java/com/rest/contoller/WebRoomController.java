@@ -23,6 +23,7 @@ public class WebRoomController {
 
     RestTemplate restTemplate = new RestTemplate();
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/roomCreation")
     public String showRoomForm(Model model) {
         model.addAttribute("room", new RoomEntity());
