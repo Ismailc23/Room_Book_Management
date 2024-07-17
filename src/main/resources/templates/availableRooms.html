@@ -13,6 +13,24 @@
             max-height: 200px;
             object-fit: cover;
         }
+        .no-rooms-message {
+            margin-top: 50px;
+            padding: 20px;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+        .no-rooms-message p {
+            margin: 0;
+            font-size: 1.2em;
+            color: #555;
+        }
+        .no-rooms-icon {
+            font-size: 4em;
+            color: #bbb;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -27,7 +45,12 @@
             <p>Available rooms for dates: <span th:text="${stayStartDate} + ' to ' + ${stayEndDate}"></span></p>
         </div>
         <div th:if="${#lists.isEmpty(availableRooms)}" class="col-12">
-            <p class="text-center">No rooms available for the selected dates.</p>
+            <div class="no-rooms-message">
+                <div class="no-rooms-icon">😔</div>
+                <p>No rooms available for the selected dates.</p>
+                <p>Please try different dates.</p>
+                <a href="/availabilityCheckForm" class="btn btn-secondary check-availability-btn">Check Availability</a>
+            </div>
         </div>
         <div th:each="room : ${availableRooms}" class="col-md-4">
             <div class="card room-card">
