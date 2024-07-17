@@ -1,7 +1,6 @@
 package com.rest.services;
 
 import com.rest.Entity.CustomerEntity;
-import com.rest.Entity.RoomEntity;
 import com.rest.ExceptionHandling.CustomerExceptions.CustomerNotFoundException;
 import com.rest.ExceptionHandling.CustomerExceptions.InvalidAgeException;
 import com.rest.Repository.BookingRepository;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Period;
-;
 import java.util.List;
 import java.util.Optional;
 

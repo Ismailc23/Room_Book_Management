@@ -1,19 +1,14 @@
 package com.rest.contoller;
 
 import com.rest.Entity.RoomEntity;
-import com.rest.Repository.BookingRepository;
-import com.rest.services.BookingService;
 import com.rest.services.RoomService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.awt.print.Book;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -24,11 +19,15 @@ public class CheckingAvailabilityUI {
     private RoomService roomService;
 
     @GetMapping("/availabilityCheckForm")
-    public String showAvailabilityCheckForm() {
+    public String showAvailabilityCheckForm(HttpSession session) {
+        String token = (String) session.getAttribute("token");
+        if(token!=null) {
         return "RoomAvailability";
     }
+        return "redirect:/app/auth/login";
+    }
 
-    @PostMapping("/availabilityCheckForm")
+    @PostMapping("/availableRooms")
     public String checkRoomAvailability(
             @RequestParam("stayStartDate") LocalDate stayStartDate,
             @RequestParam("stayEndDate") LocalDate stayEndDate,
@@ -37,11 +36,6 @@ public class CheckingAvailabilityUI {
             model.addAttribute("stayStartDate", stayStartDate);
             model.addAttribute("stayEndDate", stayEndDate);
             model.addAttribute("availableRooms", availableRooms);
-        return "redirect:/availableRooms";
-    }
-
-    @GetMapping("/availableRooms")
-    public String availableRooms() {
         return "availableRooms";
     }
 }

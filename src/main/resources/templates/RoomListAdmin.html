@@ -24,6 +24,7 @@
                     <th>Description</th>
                     <th>Price</th>
                     <th>Photo</th>
+                    <th>Update/Delete</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -33,6 +34,10 @@
                     <td th:text="${room.description}"></td>
                     <td th:text="${room.price}"></td>
                     <td><img th:src="${room.photoUrl}" style="max-width: 200px; max-height: 150px;" alt="Room Photo"></td>
+                    <td>
+                        <a th:href="@{/admin/updateRoomForm(roomNumber=${room.roomNumber})}" class="btn btn-primary btn-sm">Update</a>
+                        <a th:href="@{/admin/deleteRoomForm(roomNumber=${room.roomNumber})}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
                 </tr>
                 </tbody>
             </table>

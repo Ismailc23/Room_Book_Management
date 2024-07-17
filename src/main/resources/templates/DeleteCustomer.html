@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Deleting a Customer</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f9fa;
+        }
+        .confirmation-box {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #dc3545;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .btn-danger {
+            display: block;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="confirmation-box">
+    <form th:action="@{/deleteCustomer}" method="post" th:object="${customer}">
+        <h2>Are you sure you want to delete the Customer?</h2>
+        <input type="hidden" class="form-control" id="customerId" th:field="*{customerId}" readonly>
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+</div>
+</body>
+</html>
