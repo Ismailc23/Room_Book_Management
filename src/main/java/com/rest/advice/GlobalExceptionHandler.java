@@ -20,49 +20,55 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidAgeException.class)
     public ResponseEntity<?> handleInvalidAgeException(InvalidAgeException ex) {
-        System.out.println("Reached Invalid Age");
+        log.info("Reached InvalidAgeException");
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(UserNameAlreadyExistException.class)
     public ResponseEntity<?> handleUsernameAlreadyExistException(UserNameAlreadyExistException ex) {
-        System.out.println("Reached Username already exist");
+        log.info("Reached UserNameAlreadyExistException");
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(InvalidCredentialsException.class)
     public ResponseEntity<?> handleInvalidCredentialsException(InvalidCredentialsException ex) {
-        System.out.println("Invalid Credentials");
+        log.info("Reached InvalidCredentialException");
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(CustomerNotFoundException.class)
     public ResponseEntity<?> handleCustomerNotFoundException(CustomerNotFoundException ex) {
+        log.info("Reached CustomerNotFoundException");
         return new ResponseEntity<>(ex.getMessage(),HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(RoomNumberAlreadyExistException.class)
     public ResponseEntity<?> handleRoomNumberAlreadyExistException(RoomNumberAlreadyExistException ex) {
+        log.info("Reached RoomNumberAlreadyExistException");
         return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(RoomNotFoundException.class)
     public ResponseEntity<?> handleRoomNotFoundException(RoomNotFoundException ex) {
+        log.info("Reached RoomNotFoundException");
         return new ResponseEntity<>(ex.getMessage(),HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(OverlappingDatesException.class)
     public ResponseEntity<?> handleOverlappingDatesException(OverlappingDatesException ex) {
+        log.info("Reached OverlappingDatesException");
         return new ResponseEntity<>(ex.getMessage(),HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(InvalidDateException.class)
     public ResponseEntity<?> handleInvalidDateException(InvalidDateException ex) {
+        log.info("Reached InvalidDateException");
         return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(BookingNotFoundException.class)
     public ResponseEntity<?> hanldeBookingNotFoundException(BookingNotFoundException ex) {
+        log.info("Reached BookingNotFoundException");
         return new ResponseEntity<>(ex.getMessage(),HttpStatus.NOT_FOUND);
     }
 }
