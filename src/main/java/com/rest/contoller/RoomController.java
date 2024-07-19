@@ -32,14 +32,14 @@ public class RoomController {
            return ResponseEntity.status(HttpStatus.OK).body(room.get());
     }
 
-    @PutMapping("request/api/{roomNumber}")
+    @PutMapping("request/api/room/{roomNumber}")
     public ResponseEntity<?> updateRoom(@PathVariable Long roomNumber,@RequestBody RoomEntity room) {
         room.setRoomNumber(roomNumber);
         RoomEntity updatedRoom = roomService.updateRoom(room);
         return ResponseEntity.status(HttpStatus.OK).body(updatedRoom);
     }
 
-    @DeleteMapping("request/{roomNumber}")
+    @DeleteMapping("request/api/room/{roomNumber}")
     public ResponseEntity<?> deleteRoom(@PathVariable Long roomNumber) {
         roomService.deleteRoom(roomNumber);
         return ResponseEntity.status(HttpStatus.OK).body("Deleted the room successfully");

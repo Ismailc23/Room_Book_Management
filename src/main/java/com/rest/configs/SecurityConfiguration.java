@@ -26,6 +26,7 @@ public class SecurityConfiguration {
                 .disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/**","/registrationMethod","/loginMethod","/css/**").permitAll()
+                .requestMatchers("/request/api/room/**").hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()
