@@ -34,15 +34,9 @@ public class AuthenticationService {
         if (userRepository.existsByEmail(input.getEmail())) {
             throw new UserNameAlreadyExistException("Username already exists: " + input.getEmail());
         }
-        User user = new User();
-                user.setFullName(input.getFullName());
-                user.setEmail(input.getEmail());
-                user.setPassword(passwordEncoder.encode(input.getPassword()));
-                Optional<Role> userRole = roleRepository.findByName(RoleEnum.USER);
-                Set<Role> roles = new HashSet<>();
-                userRole.ifPresent(roles::add);
-                user.setRoles(roles);
-        return userRepository.save(user);
+        Set<Role> roles = new HashSet<>();
+        roleRepository.findByName(RoleEnum.USER).ifPresent(roles::add);
+        return userRepository.save(new User(input.getFullName(), input.getEmail(), passwordEncoder.encode(input.getPassword()), roles));
     }
 
     public User authenticate(LoginUserDto input) {

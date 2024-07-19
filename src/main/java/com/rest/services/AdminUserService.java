@@ -29,14 +29,8 @@ public class AdminUserService {
         if (existingUser.isPresent()) {
             return existingUser.get();
         }
-        User adminUser = new User();
-        adminUser.setFullName(fullName);
-        adminUser.setEmail(email);
-        adminUser.setPassword(passwordEncoder.encode(password));
-        Optional<Role> adminRole = roleRepository.findByName(RoleEnum.ADMIN);
         Set<Role> roles = new HashSet<>();
-        adminRole.ifPresent(roles::add);
-        adminUser.setRoles(roles);
-        return userRepository.save(adminUser);
+        roleRepository.findByName(RoleEnum.ADMIN).ifPresent(roles::add);
+        return userRepository.save(new User(fullName, email, passwordEncoder.encode(password), roles));
     }
 }
