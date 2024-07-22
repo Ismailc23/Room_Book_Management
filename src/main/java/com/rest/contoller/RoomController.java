@@ -21,48 +21,27 @@ public class RoomController {
 
     @PostMapping("request/api/room")
     public ResponseEntity<?> createRoom(@RequestBody RoomEntity room) {
-        try {
             RoomEntity createdRoom = roomService.createRoom(room);
-            return ResponseEntity.status(HttpStatus.CREATED).body(room);
-        }
-        catch(RoomNumberAlreadyExistException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdRoom);
     }
 
     @GetMapping("request/api/room/{id}")
     public ResponseEntity<?> getRoom(@PathVariable long id) {
-       try {
            Optional<RoomEntity> room = roomService.getRoomById(id);
            log.debug("Room is present with Room number : {}",id);
            return ResponseEntity.status(HttpStatus.OK).body(room.get());
-       }
-       catch(RoomNotFoundException e) {
-           log.debug("Room is not present with Room number : {}",id);
-           return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-       }
     }
 
-    @PutMapping("request/api/{roomNumber}")
+    @PutMapping("request/api/room/{roomNumber}")
     public ResponseEntity<?> updateRoom(@PathVariable Long roomNumber,@RequestBody RoomEntity room) {
         room.setRoomNumber(roomNumber);
-        try {
-            RoomEntity updatedRoom = roomService.updateRoom(room);
-            return ResponseEntity.status(HttpStatus.OK).body(updatedRoom);
-        }
-        catch(RoomNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body(e.getMessage());
-        }
+        RoomEntity updatedRoom = roomService.updateRoom(room);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedRoom);
     }
 
-    @DeleteMapping("request/{roomNumber}")
+    @DeleteMapping("request/api/room/{roomNumber}")
     public ResponseEntity<?> deleteRoom(@PathVariable Long roomNumber) {
-        try {
-            boolean deletedRoom = roomService.deleteRoom(roomNumber);
-            return ResponseEntity.status(HttpStatus.OK).body("Deleted the room successfully");
+        roomService.deleteRoom(roomNumber);
+        return ResponseEntity.status(HttpStatus.OK).body("Deleted the room successfully");
         }
-        catch(RoomNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
-    }
 }

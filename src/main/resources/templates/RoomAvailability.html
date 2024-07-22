@@ -48,7 +48,7 @@
                     <h2>Check Room Availability</h2>
                 </div>
                 <div class="card-body">
-                    <form th:action="@{/availableRooms}" method="post" onsubmit="return dateValidation()">
+                    <form th:action="@{/availableRooms}" method="get" onsubmit="dateValidation()">
                         <div class="form-group">
                             <label for="stayStartDate">Stay Start Date</label>
                             <input type="date" id="stayStartDate" class="form-control" name="stayStartDate" required>

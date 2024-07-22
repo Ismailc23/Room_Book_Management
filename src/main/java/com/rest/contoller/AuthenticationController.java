@@ -10,12 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import java.util.stream.Collectors;
 
 import java.util.stream.Collectors;
 
 @RestController
 public class AuthenticationController {
-
+    
     @Autowired
     private JwtService jwtService;
 
@@ -36,6 +37,10 @@ public class AuthenticationController {
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setToken(jwtToken);
         loginResponse.setExpiresIn(jwtService.getExpirationTime());
+        loginResponse.setRoles(authenticatedUser.getRoles()
+                .stream()
+                .map(role -> role.getName().name())
+                .collect(Collectors.toList()));
         return ResponseEntity.ok(loginResponse);
     }
 }

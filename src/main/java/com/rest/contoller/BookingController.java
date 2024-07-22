@@ -22,45 +22,23 @@ public class BookingController {
 
     @PostMapping("/api/customers/{id}/{roomNumber}")
     public ResponseEntity<?> createBooking(@PathVariable("id") Long customerId, @PathVariable("roomNumber") Long roomNumber,@RequestBody BookingEntity bookings) {
-        try {
             BookingEntity createdBooking = bookingService.createBookings(customerId, roomNumber, bookings);
             log.debug("Booking is done successfully");
             return ResponseEntity.status(HttpStatus.CREATED).body(createdBooking);
-        }
-        catch (CustomerNotFoundException | InvalidDateException | RoomNotFoundException e) {
-            log.error("Booking is not created");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-        catch(OverlappingDatesException e) {
-            log.error("Dates provided are overlapping with the bookings in the database");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-        }
     }
 
     @GetMapping("/bookings/{referenceId}")
     public ResponseEntity<?> getBookings(@PathVariable long referenceId) {
-        try {
             Optional<BookingEntity> bookings = bookingService.getBookingsByReferenceId(referenceId);
             log.debug("Fetching booking succesfful");
             return ResponseEntity.status(HttpStatus.OK).body(bookings.get());
-        }
-        catch(BookingNotFoundException e) {
-            log.error("Booking is not found to fetch");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
     }
 
     @GetMapping("customers/{id}/{roomNumber}")
     public ResponseEntity<?> getBookingByCustomerIdAndRoomNumber(@PathVariable("id") Long customerId,@PathVariable("roomNumber") Long roomNumber) {
-        try {
             Optional<BookingEntity> bookings = bookingService.getBookingsByCustomerIdAndRoomNumber(customerId, roomNumber);
             log.debug("Fetching booking succesful");
             return ResponseEntity.status(HttpStatus.OK).body(bookings.get());
-        }
-        catch(BookingNotFoundException e) {
-            log.error("Booking is not found");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
     }
 
     @PatchMapping("/{id}")

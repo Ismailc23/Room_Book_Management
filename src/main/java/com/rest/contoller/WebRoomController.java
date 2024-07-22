@@ -54,7 +54,7 @@ public class WebRoomController {
 
     @PostMapping("/updateRoom")
     public String updateRoom(RoomEntity room, Model model) {
-        String url = "http://localhost:8080/request/api/" + room.getRoomNumber();
+        String url = "http://localhost:8080/request/api/room/" + room.getRoomNumber();
         try {
             restTemplate.put(url, room);
             model.addAttribute("message", "Room updated successfully!");
@@ -75,7 +75,7 @@ public class WebRoomController {
 
     @PostMapping("/deleteRoom")
     public String deleteRoom(RoomEntity room, Model model) {
-        String url = "http://localhost:8080/request/" + room.getRoomNumber();
+        String url = "http://localhost:8080/request/api/room/" + room.getRoomNumber();
         try {
             restTemplate.delete(url);
             model.addAttribute("message", "Room deleted successfully!");
