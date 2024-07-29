@@ -13,6 +13,6 @@ public class AdminUserSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        adminUserService.createAdminUser("Admin User", "admin@example.com", "admin123");
+        adminUserService.createAdminUser("Admin User", "admin@example.com", "Admin@123");
     }
 }
