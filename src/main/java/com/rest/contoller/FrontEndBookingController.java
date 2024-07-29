@@ -25,7 +25,7 @@ public class FrontEndBookingController {
         BookingEntity booking = new BookingEntity();
         booking.setStayStartDate(stayStartDate);
         booking.setStayEndDate(stayEndDate);
-        String bookingApiUrl = String.format("http://localhost:8080/api/customers/%d/%d", customerId, roomNumber);
+        String bookingApiUrl = String.format("http://localhost:8081/api/customers/%d/%d", customerId, roomNumber);
         RestTemplate restTemplate = new RestTemplate();
         try {
             ResponseEntity<BookingEntity> response = restTemplate.postForEntity(bookingApiUrl, booking, BookingEntity.class);

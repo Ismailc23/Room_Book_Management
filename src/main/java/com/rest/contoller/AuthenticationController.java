@@ -12,9 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import java.util.stream.Collectors;
 
-import java.util.stream.Collectors;
-
+@RequestMapping("/auth")
 @RestController
+@CrossOrigin("*")
 public class AuthenticationController {
     
     @Autowired

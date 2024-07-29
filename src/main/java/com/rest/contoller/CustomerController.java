@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
+@CrossOrigin("*")
 public class CustomerController {
 
     @Autowired

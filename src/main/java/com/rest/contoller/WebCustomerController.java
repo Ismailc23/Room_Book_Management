@@ -35,7 +35,7 @@ public class WebCustomerController {
 
     @PostMapping("/customerCreation")
     public String submitCustomerForm(CustomerEntity customer, Model model, HttpSession session) {
-        ResponseEntity<CustomerEntity> response = restTemplate.postForEntity("http://localhost:8080/request/api/customer", customer, CustomerEntity.class);
+        ResponseEntity<CustomerEntity> response = restTemplate.postForEntity("http://localhost:8081/request/api/customer", customer, CustomerEntity.class);
         if (response.getStatusCode() == HttpStatus.CREATED) {
             CustomerEntity createdCustomer = response.getBody();
             session.setAttribute("Id",createdCustomer.getCustomerId());
@@ -56,7 +56,7 @@ public class WebCustomerController {
 
     @GetMapping("/customerDetails/{id}")
     public String getCustomerDetails(@PathVariable Long id,Model model) {
-        CustomerEntity customer = restTemplate.getForObject("http://localhost:8080/request/api/customer/"+id, CustomerEntity.class);
+        CustomerEntity customer = restTemplate.getForObject("http://localhost:8081/request/api/customer/"+id, CustomerEntity.class);
         model.addAttribute("customer",customer);
         return "customerDetails";
     }
@@ -65,7 +65,7 @@ public class WebCustomerController {
     public String showUpdateForm(@RequestParam("id") Long id, Model model,HttpSession session) {
         String token = (String) session.getAttribute("token");
         if (token != null) {
-            String url = "http://localhost:8080/request/api/customer/" + id;
+            String url = "http://localhost:8081/request/api/customer/" + id;
             CustomerEntity customer = restTemplate.getForObject(url, CustomerEntity.class);
             model.addAttribute("customer", customer);
             return "updateCustomer";
@@ -75,7 +75,7 @@ public class WebCustomerController {
 
     @PostMapping("/updateCustomer")
     public String updateCustomer(CustomerEntity customer, Model model) {
-        String url = "http://localhost:8080/request/api/customer/" + customer.getCustomerId();
+        String url = "http://localhost:8081/request/api/customer/" + customer.getCustomerId();
         try {
             restTemplate.put(url, customer);
             model.addAttribute("message", "Customer updated successfully!");
@@ -88,7 +88,7 @@ public class WebCustomerController {
 
     @GetMapping("/deleteCustomerForm")
     public String deleteCustomer(@RequestParam("id") Long id, Model model) {
-        String url = "http://localhost:8080/request/api/customer/" + id;
+        String url = "http://localhost:8081/request/api/customer/" + id;
         CustomerEntity customer = restTemplate.getForObject(url, CustomerEntity.class);
         model.addAttribute("customer", customer);
         return "DeleteCustomer";
@@ -96,7 +96,7 @@ public class WebCustomerController {
 
     @PostMapping("/deleteCustomer")
     public String deleteCustomer(CustomerEntity customer, Model model) {
-        String url = "http://localhost:8080/request/api/customer/" + customer.getCustomerId();
+        String url = "http://localhost:8081/request/api/customer/" + customer.getCustomerId();
         try {
             restTemplate.delete(url);
             model.addAttribute("message", "Customer deleted successfully!");

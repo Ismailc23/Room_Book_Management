@@ -1,65 +1,64 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Sign Up Page</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <script>
-        function validatePassword() {
-            const password = document.getElementById('password').value;
-            const errorElement = document.getElementById('passwordError');
-            const regex = /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[a-z]).{8,}$/;
-
-            if (!regex.test(password)) {
-                errorElement.style.display = 'block';
-                return false;
-            } else {
-                errorElement.style.display = 'none';
-                return true;
-            }
-        }
-    </script>
-</head>
-<body>
-<div class="container">
-    <div class="d-flex justify-content-center h-100">
-        <div class="card">
-            <div class="card-header">
-                <h3>Sign Up</h3>
-            </div>
-            <div class="card-body">
-                <form th:action="@{/app/auth/signup}" method="post" style="max-width: 600px; margin: 0 auto;" th:object="${registerUserDto}" onsubmit="return validatePassword() ">
-                    <div th:if="${error}" class="alert alert-danger" role="alert">
-                        <span th:text="${error}"></span>
-                    </div>
-                    <div class="input-group form-group">
-                        <input type="text" class="form-control" placeholder="Full Name" th:field="*{fullName}" required />
-                    </div>
-                    <div class="input-group form-group">
-                        <input type="email" class="form-control" placeholder="Email" th:field="*{email}" required />
-                    </div>
-                    <div class="input-group form-group">
-                        <input type="password" class="form-control" placeholder="Password" id="password" th:field="*{password}" required />
-                    </div>
-                    <div id="passwordError" class="alert alert-danger" role="alert" style="display: none;">
-                        <ul>
-                            <li>Password must be at least 8 characters long</li>
-                            <li>Password must contain one uppercase letter</li>
-                            <li>Password must contain one special character</li>
-                        </ul>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Sign Up" class="btn float-right login_btn">
-                    </div>
-                </form>
-            </div>
-            <div class="card-footer">
-                <div class="d-flex justify-content-center links">
-                    Want to Log In? <a href="/app/auth/login">Login</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-</body>
-</html>
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <title>Sign Up Page</title>-->
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">-->
+<!--    <link rel="stylesheet" type="text/css" href="/css/style.css">-->
+<!--    <script>-->
+<!--        function validatePassword() {-->
+<!--            const password = document.getElementById('password').value;-->
+<!--            const errorElement = document.getElementById('passwordError');-->
+<!--            const regex = /^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[a-z]).{8,}$/;-->
+<!--            if (!regex.test(password)) {-->
+<!--                errorElement.style.display = 'block';-->
+<!--                return false;-->
+<!--            } else {-->
+<!--                errorElement.style.display = 'none';-->
+<!--                return true;-->
+<!--            }-->
+<!--        }-->
+<!--    </script>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container">-->
+<!--    <div class="d-flex justify-content-center h-100">-->
+<!--        <div class="card">-->
+<!--            <div class="card-header">-->
+<!--                <h3>Sign Up</h3>-->
+<!--            </div>-->
+<!--            <div class="card-body">-->
+<!--                <form th:action="@{/app/auth/signup}" method="post" style="max-width: 600px; margin: 0 auto;" th:object="${registerUserDto}" onsubmit="return validatePassword() ">-->
+<!--                    <div th:if="${error}" class="alert alert-danger" role="alert">-->
+<!--                        <span th:text="${error}"></span>-->
+<!--                    </div>-->
+<!--                    <div class="input-group form-group">-->
+<!--                        <input type="text" class="form-control" placeholder="Full Name" th:field="*{fullName}" required />-->
+<!--                    </div>-->
+<!--                    <div class="input-group form-group">-->
+<!--                        <input type="email" class="form-control" placeholder="Email" th:field="*{email}" required />-->
+<!--                    </div>-->
+<!--                    <div class="input-group form-group">-->
+<!--                        <input type="password" class="form-control" placeholder="Password" id="password" th:field="*{password}" required />-->
+<!--                    </div>-->
+<!--                    <div id="passwordError" class="alert alert-danger" role="alert" style="display: none;">-->
+<!--                        <ul>-->
+<!--                            <li>Password must be at least 8 characters long</li>-->
+<!--                            <li>Password must contain one uppercase letter</li>-->
+<!--                            <li>Password must contain one special character</li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <input type="submit" value="Sign Up" class="btn float-right login_btn">-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--            <div class="card-footer">-->
+<!--                <div class="d-flex justify-content-center links">-->
+<!--                    Want to Log In? <a href="/app/auth/login">Login</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->

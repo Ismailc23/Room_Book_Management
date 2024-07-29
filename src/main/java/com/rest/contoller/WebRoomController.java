@@ -33,7 +33,7 @@ public class WebRoomController {
     @PostMapping("/roomCreation")
     public String submitRoomForm(@ModelAttribute RoomEntity room) {
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.postForEntity("http://localhost:8080/request/api/room", room, RoomEntity.class);
+        restTemplate.postForEntity("http://localhost:8081/request/api/room", room, RoomEntity.class);
         return "redirect:/admin/roomCreation";
     }
 
@@ -46,7 +46,7 @@ public class WebRoomController {
 
     @GetMapping("/updateRoomForm")
     public String showRoomUpdateForm(@RequestParam("roomNumber") Long roomNumber, Model model) {
-        String url = "http://localhost:8080/request/api/room/" + roomNumber;
+        String url = "http://localhost:8081/request/api/room/" + roomNumber;
         RoomEntity room = restTemplate.getForObject(url, RoomEntity.class);
         model.addAttribute("room", room);
         return "updateRoom";
@@ -54,7 +54,7 @@ public class WebRoomController {
 
     @PostMapping("/updateRoom")
     public String updateRoom(RoomEntity room, Model model) {
-        String url = "http://localhost:8080/request/api/room/" + room.getRoomNumber();
+        String url = "http://localhost:8081/request/api/room/" + room.getRoomNumber();
         try {
             restTemplate.put(url, room);
             model.addAttribute("message", "Room updated successfully!");
@@ -67,7 +67,7 @@ public class WebRoomController {
 
     @GetMapping("/deleteRoomForm")
     public String deleteRoom(@RequestParam("roomNumber") Long roomNumber, Model model) {
-        String url = "http://localhost:8080/request/api/room/" + roomNumber;
+        String url = "http://localhost:8081/request/api/room/" + roomNumber;
         RoomEntity room = restTemplate.getForObject(url, RoomEntity.class);
         model.addAttribute("room", room);
         return "DeleteRoom";
@@ -75,7 +75,7 @@ public class WebRoomController {
 
     @PostMapping("/deleteRoom")
     public String deleteRoom(RoomEntity room, Model model) {
-        String url = "http://localhost:8080/request/api/room/" + room.getRoomNumber();
+        String url = "http://localhost:8081/request/api/room/" + room.getRoomNumber();
         try {
             restTemplate.delete(url);
             model.addAttribute("message", "Room deleted successfully!");
